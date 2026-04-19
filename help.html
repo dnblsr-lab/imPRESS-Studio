@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>imPRESS Studio — Pomoc i instrukcja obsługi</title>
+<meta name="description" content="Pełna instrukcja obsługi imPRESS Studio — profesjonalnego narzędzia do impozycji PDF. Szablony, podgląd, eksport, PDF/X-4, creep, oprawa zeszytowa i klejona.">
+<style>
+  :root {
+    --bg: #0f1419;
+    --bg-card: #141a22;
+    --bg-card-alt: #1a2028;
+    --border: #232c38;
+    --text: #e6edf3;
+    --text-muted: #94a3b8;
+    --text-soft: #c9d5e3;
+    --accent: #2563eb;
+    --accent-light: #58a6ff;
+    --success: #22c55e;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    font-size: 16px;
+  }
+  .container { max-width: 960px; margin: 0 auto; padding: 40px 24px; }
+  header {
+    background: linear-gradient(135deg, #141a22 0%, #1a2028 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 48px 24px;
+    text-align: center;
+  }
+  header .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  header .logo-mark {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 28px;
+    color: #fff;
+  }
+  header h1 { margin: 0; font-size: 36px; font-weight: 800; letter-spacing: -0.5px; }
+  header .subtitle { color: var(--text-muted); font-size: 15px; margin-top: 8px; }
+  nav.toc {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 32px 0;
+  }
+  nav.toc h2 {
+    margin: 0 0 12px 0;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent-light);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  nav.toc ul { margin: 0; padding-left: 20px; columns: 2; column-gap: 24px; }
+  nav.toc li { margin: 4px 0; break-inside: avoid; }
+  nav.toc a { color: var(--text-soft); text-decoration: none; font-size: 14px; }
+  nav.toc a:hover { color: var(--accent-light); text-decoration: underline; }
+  section {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin-bottom: 20px;
+  }
+  section h2 {
+    margin: 0 0 6px 0;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent-light);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  section h3 {
+    margin: 0 0 16px 0;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  section h4 {
+    margin: 20px 0 8px 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  section p { margin: 8px 0; color: var(--text-soft); }
+  section ol, section ul { padding-left: 20px; color: var(--text-soft); }
+  section li { margin: 6px 0; }
+  section strong { color: var(--text); }
+  kbd {
+    display: inline-block;
+    padding: 2px 8px;
+    font-family: "JetBrains Mono", Consolas, Menlo, monospace;
+    font-size: 12px;
+    background: var(--bg-card-alt);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text);
+  }
+  .callout {
+    border-left: 3px solid var(--accent);
+    background: rgba(37, 99, 235, 0.08);
+    padding: 12px 16px;
+    border-radius: 0 8px 8px 0;
+    margin: 16px 0;
+  }
+  .callout.warning { border-color: var(--warning); background: rgba(245, 158, 11, 0.08); }
+  .callout.success { border-color: var(--success); background: rgba(34, 197, 94, 0.08); }
+  .shortcuts {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 8px 16px;
+    margin-top: 12px;
+  }
+  .shortcuts dt { color: var(--text); font-weight: 600; }
+  .shortcuts dd { margin: 0; color: var(--text-muted); }
+  .glossary dt { color: var(--text); font-weight: 700; margin-top: 12px; }
+  .glossary dd { margin: 4px 0 0 0; color: var(--text-muted); }
+  footer {
+    padding: 32px 24px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+  footer a { color: var(--accent-light); text-decoration: none; }
+  @media (max-width: 700px) {
+    nav.toc ul { columns: 1; }
+    header h1 { font-size: 28px; }
+    section { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-mark">i</div>
+    <div>
+      <h1>imPRESS Studio</h1>
+      <div class="subtitle">Pomoc i instrukcja obsługi</div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <nav class="toc">
+    <h2>Spis treści</h2>
+    <ul>
+      <li><a href="#intro">Co to jest imPRESS Studio?</a></li>
+      <li><a href="#quickstart">Szybki start — 5 kroków</a></li>
+      <li><a href="#ui">Przegląd interfejsu</a></li>
+      <li><a href="#templates">Szablony impozycji</a></li>
+      <li><a href="#sourcefiles">Pliki źródłowe PDF</a></li>
+      <li><a href="#preview">Podgląd arkuszy</a></li>
+      <li><a href="#preview-options">Opcje podglądu</a></li>
+      <li><a href="#bindings">Typy oprawy</a></li>
+      <li><a href="#margins">Marginesy i znaczniki</a></li>
+      <li><a href="#creep">Kompensacja pełzania</a></li>
+      <li><a href="#export">Eksport do druku</a></li>
+      <li><a href="#pdfx">Konwersja do PDF/X-4</a></li>
+      <li><a href="#stats">Statystyki zlecenia</a></li>
+      <li><a href="#papers">Własne rozmiary papieru</a></li>
+      <li><a href="#cli">Tryb wiersza poleceń (CLI)</a></li>
+      <li><a href="#license">Licencjonowanie i aktywacja</a></li>
+      <li><a href="#shortcuts">Skróty klawiaturowe</a></li>
+      <li><a href="#glossary">Słowniczek pojęć</a></li>
+      <li><a href="#troubleshooting">Rozwiązywanie problemów</a></li>
+    </ul>
+  </nav>
+
+  <section id="intro">
+    <h2>Wprowadzenie</h2>
+    <h3>Co to jest imPRESS Studio?</h3>
+    <p><strong>imPRESS Studio</strong> to profesjonalne narzędzie do impozycji plików PDF przeznaczone dla drukarni, studiów DTP i grafików przygotowujących publikacje do druku offsetowego, cyfrowego lub Print-on-Demand.</p>
+    <p>Aplikacja układa strony dokumentu na arkuszach drukarskich (SRA3, A3, Letter lub własnych rozmiarach) zgodnie z wybraną metodą oprawy, generuje znaczniki drukarskie, kompensuje pełzanie (creep) i eksportuje gotowy plik PDF — opcjonalnie w standardzie PDF/X-4.</p>
+    <h4>Kluczowe możliwości</h4>
+    <ul>
+      <li>Oprawa zeszytowa (saddle stitch), klejona (perfect bound), falcowanie (Z-fold, harmonijka)</li>
+      <li>Interaktywny podgląd arkuszy z miniaturami, nawigacją i obrotem</li>
+      <li>Znaczniki drukarskie: cięcia, pasery, paski kolorów CMYK, bigowanie</li>
+      <li>Automatyczna kompensacja pełzania dla oprawy zeszytowej</li>
+      <li>Symulacja nadruku (overprint, multiply blend)</li>
+      <li>Statystyki zużycia materiału, szacowanie kosztów</li>
+      <li>Konwersja do PDF/X-4 z profilem ICC (przez Ghostscript)</li>
+      <li>Tryb wsadowy (CLI) do automatyzacji</li>
+    </ul>
+  </section>
+
+  <section id="quickstart">
+    <h2>Szybki start</h2>
+    <h3>Pięć kroków do pierwszej impozycji</h3>
+    <ol>
+      <li><strong>Wybierz lub utwórz szablon</strong> — kliknij przycisk <em>Szablon</em> w górnym pasku lub <em>Zarządzaj szablonami</em> w lewym panelu. Wybierz gotowy szablon (np. „Broszura A5 — zeszytowa”) lub zdefiniuj własny.</li>
+      <li><strong>Wczytaj plik PDF</strong> — kliknij <em>+ Dodaj pliki…</em> albo po prostu przeciągnij plik PDF na okno aplikacji. Jeśli dodasz kilka plików, zaznacz je i kliknij <em>Wczytaj zaznaczone</em> — zostaną scalone w jeden dokument.</li>
+      <li><strong>Zaplanuj impozycję</strong> — naciśnij <kbd>Ctrl+P</kbd> lub <em>Planuj</em>. Aplikacja ułoży strony na arkuszach zgodnie z szablonem.</li>
+      <li><strong>Sprawdź podgląd</strong> — przeglądaj arkusze strzałkami ← →, zoomuj kółkiem myszy, włączaj znaczniki, pokaż przód/tył lub rozkładówkę.</li>
+      <li><strong>Wyeksportuj</strong> — naciśnij <kbd>Ctrl+E</kbd>. W oknie opcji eksportu wybierz zakres arkuszy, standard PDF i (opcjonalnie) konwersję PDF/X-4. Wskaż plik wyjściowy i gotowe.</li>
+    </ol>
+    <div class="callout success">
+      <strong>Wskazówka:</strong> pierwsze uruchomienie warto przetestować na krótkim pliku (np. 16 stron) z prostym szablonem „A5 — zeszytowa, 2×1”. Zrozumiesz wtedy logikę układania stron na arkuszach.
+    </div>
+  </section>
+
+  <section id="ui">
+    <h2>Interfejs</h2>
+    <h3>Przegląd okna głównego</h3>
+    <p>Okno podzielone jest na trzy kolumny plus nagłówek i pasek stanu:</p>
+    <ul>
+      <li><strong>Nagłówek</strong> — logo, przyciski <em>Szablon</em>, <em>Opcje eksportu</em>, <em>Pomoc</em>, <em>Licencja</em>, <em>O programie</em> oraz <em>Planuj</em> i <em>Eksportuj</em>.</li>
+      <li><strong>Lewy panel</strong> — karty: <em>Szablon</em> (bieżący szablon), <em>Pliki źródłowe PDF</em> (lista wczytanych plików), <em>Plik wyjściowy</em>, <em>Akcje</em>, <em>Dokument</em> (liczba stron, arkuszy, sygnatur).</li>
+      <li><strong>Środkowy panel</strong> — interaktywny podgląd arkusza z paskiem narzędzi (zoom, nawigacja, opcje) i miniaturami arkuszy.</li>
+      <li><strong>Prawy panel</strong> — statystyki zlecenia: arkusze, sygnatury, zużycie papieru, szacowanie kosztów, informacje o oprawie.</li>
+      <li><strong>Pasek stanu</strong> (dół) — aktualny status operacji, wskazówki dotyczące obsługi podglądu.</li>
+    </ul>
+  </section>
+
+  <section id="templates">
+    <h2>Szablony</h2>
+    <h3>Szablony impozycji — co określają</h3>
+    <p>Szablon to plan pracy impozycji. Zawiera wszystkie parametry potrzebne do ułożenia stron na arkuszach:</p>
+    <ul>
+      <li><strong>Typ oprawy</strong> — zeszytowa, klejona, falcowanie (Z-fold / harmonijka)</li>
+      <li><strong>Rozmiar arkusza</strong> — SRA3, A3, Letter lub dowolny własny</li>
+      <li><strong>Rozmiar po obcięciu (trim)</strong> — końcowy wymiar strony publikacji</li>
+      <li><strong>Układ N-Up</strong> — ile stron na jednej stronie arkusza, np. 2×1 dla typowej broszury A5 na SRA3</li>
+      <li><strong>Stron na sygnaturę</strong> — typowo 8 lub 16 dla oprawy zeszytowej</li>
+      <li><strong>Marginesy</strong> — spad, strefa bezpieczna, rynienka, grzbiet, margines arkusza</li>
+      <li><strong>Znaczniki drukarskie</strong> — cięcia, pasery, paski kolorów, bigowanie</li>
+      <li><strong>Kompensacja pełzania</strong> — dla opraw zeszytowych (grubość papieru)</li>
+      <li><strong>Opcje falcowania</strong> — liczba paneli (Z-fold: 3, harmonijka: 4+)</li>
+    </ul>
+    <h4>Jak zarządzać szablonami</h4>
+    <p>Kliknij <em>Szablon</em> w nagłówku lub <em>Zarządzaj szablonami</em> w lewym panelu. W menedżerze możesz:</p>
+    <ul>
+      <li>Wybrać jeden z gotowych szablonów</li>
+      <li>Utworzyć nowy szablon od zera (przycisk <em>Nowy</em>)</li>
+      <li>Edytować parametry, zapisać pod własną nazwą (plik JSON)</li>
+      <li>Importować/eksportować szablony jako pliki <code>.json</code> — do wymiany między stanowiskami</li>
+    </ul>
+  </section>
+
+  <section id="sourcefiles">
+    <h2>Pliki źródłowe</h2>
+    <h3>Obsługa plików PDF</h3>
+    <p>Lewy panel — karta <em>Pliki źródłowe PDF</em> — pozwala zarządzać listą dokumentów wejściowych:</p>
+    <ul>
+      <li><strong>+ Dodaj pliki…</strong> (<kbd>Ctrl+O</kbd>) — otwiera standardowy dialog wyboru plików. Można wybrać wiele PDF-ów naraz.</li>
+      <li><strong>Przeciągnij i upuść</strong> — po prostu upuść pliki PDF na okno aplikacji.</li>
+      <li><strong>Checkboxy</strong> — zaznacz pliki, które mają być wczytane. Jeśli zaznaczysz więcej niż jeden, kliknięcie <em>Wczytaj zaznaczone</em> scali je w jeden dokument (w kolejności na liście).</li>
+      <li><strong>Strzałki ▲▼</strong> — zmiana kolejności plików przed scaleniem.</li>
+      <li><strong>Info</strong> — szczegóły wybranego PDF-a: liczba stron, wymiary, trim, metadane, czcionki, przezroczystości, szyfrowanie, tagowanie, OCG (warstwy).</li>
+      <li><strong>✕</strong> — usuń zaznaczony plik z listy.</li>
+      <li><strong>Usuń odznaczone</strong> — szybkie czyszczenie listy z plików bez checkboxa.</li>
+    </ul>
+    <div class="callout">
+      <strong>Porada:</strong> pole <em>Info</em> jest nieocenione przy diagnostyce problemów z plikami — pokaże np. zaszyfrowanie PDF-a, mieszane wymiary stron, brak spadów czy nieosadzone czcionki.
+    </div>
+  </section>
+
+  <section id="preview">
+    <h2>Podgląd</h2>
+    <h3>Nawigacja po arkuszach</h3>
+    <ul>
+      <li><strong>Kółko myszy</strong> — zoom względem kursora (powiększenie skupia się na miejscu pod wskaźnikiem)</li>
+      <li><strong>Przeciąganie myszą</strong> — przesuwanie widoku (pan)</li>
+      <li><strong>Strzałki ← / →</strong> — poprzedni / następny arkusz</li>
+      <li><strong>Miniatury na dole</strong> — szybkie przejście do wybranego arkusza</li>
+      <li><strong>Pole „Arkusz X / Y”</strong> — licznik bieżącego arkusza</li>
+      <li><kbd>Ctrl+0</kbd> lub <kbd>F</kbd> — dopasuj widok do okna (fit)</li>
+      <li><kbd>R</kbd> — obróć cały widok o 90°</li>
+      <li><kbd>Ctrl + +</kbd> / <kbd>Ctrl + -</kbd> — zoom w / z klawiatury</li>
+      <li>Przyciski szybkiego zoomu: <em>50%</em>, <em>Dopasuj</em>, <em>200%</em></li>
+    </ul>
+  </section>
+
+  <section id="preview-options">
+    <h2>Opcje podglądu</h2>
+    <h3>Co można wizualizować</h3>
+    <ul>
+      <li><strong>Tył / Przód</strong> (⇄) — przełączanie między przednią i tylną stroną arkusza (druk dwustronny)</li>
+      <li><strong>Rozkładówka</strong> — przód i tył obok siebie, do kontroli pasowania</li>
+      <li><strong>Znaczniki</strong> — linie cięcia, pasery, paski kolorów CMYK, znaczniki bigowania</li>
+      <li><strong>Pełzanie (creep)</strong> — pomarańczowe linie przerywane pokazujące kompensację pełzania dla każdej sygnatury</li>
+      <li><strong>Nadruk (overprint)</strong> — symulacja multiply blend dla ciemnienia przy nadruku kolorów CMYK</li>
+      <li><strong>Obrót widoku</strong> (↻) — obrót 90° dla sprawdzenia orientacji przy druku na prasie</li>
+    </ul>
+  </section>
+
+  <section id="bindings">
+    <h2>Typy oprawy</h2>
+    <h3>Metody łączenia składek</h3>
+    <h4>Oprawa zeszytowa (saddle stitch)</h4>
+    <p>Składki złożone na pół i zszyte zszywkami w grzbiecie. Typowo 8 lub 16 stron na sygnaturę. Idealna dla cienkich publikacji (do ~60 stron). <strong>Wymaga kompensacji pełzania</strong> przy większych nakładach.</p>
+    <h4>Oprawa klejona (perfect bound)</h4>
+    <p>Każda sygnatura jest osobną składką, sklejaną klejem w grzbiecie. Stosowana w grubszych książkach (powyżej ~50 stron). Wymaga ustawienia <strong>marginesu grzbietowego (spine)</strong> — jego szerokość zależy od grubości całej książki.</p>
+    <h4>Falcowanie (fold)</h4>
+    <p>Arkusz składany bez cięcia. Używane w ulotkach, folderach, mapach:</p>
+    <ul>
+      <li><strong>Z-fold</strong> — 3 panele złożone w kształt Z</li>
+      <li><strong>Harmonijka</strong> — 4 lub więcej paneli składanych naprzemiennie</li>
+    </ul>
+  </section>
+
+  <section id="margins">
+    <h2>Marginesy i znaczniki</h2>
+    <h3>Pojęcia drukarskie</h3>
+    <dl class="glossary">
+      <dt>Spad (bleed)</dt>
+      <dd>Obszar grafiki wychodzący poza linie cięcia — typowo 3 mm. Zabezpiecza przed białymi krawędziami po obcięciu niedokładnym o ułamek milimetra.</dd>
+      <dt>Strefa bezpieczna (safe zone)</dt>
+      <dd>Minimalna odległość tekstu i ważnych elementów od linii cięcia — typowo 5 mm. Chroni przed przycięciem treści.</dd>
+      <dt>Rynienka (gutter)</dt>
+      <dd>Odstęp między sąsiednimi stronami na arkuszu. Umożliwia obcięcie po wydruku.</dd>
+      <dt>Margines arkusza</dt>
+      <dd>Odstęp od krawędzi arkusza drukarskiego do pierwszej strony publikacji. Wymagany przez maszyny drukarskie do chwytaka.</dd>
+      <dt>Grzbiet (spine)</dt>
+      <dd>Szerokość grzbietu dla oprawy klejonej. Obliczana z grubości papieru × liczba stron.</dd>
+      <dt>Znaczniki cięcia (crop marks)</dt>
+      <dd>Cienkie linie w rogach wskazujące miejsce obcinania po druku.</dd>
+      <dt>Pasery (registration marks)</dt>
+      <dd>Znaczniki krzyżykowe używane do pasowania separacji CMYK — każda farba musi trafić dokładnie w tym samym punkcie.</dd>
+      <dt>Paski kolorów (color bars)</dt>
+      <dd>Kontrolne paski CMYK pozwalające zmierzyć gęstość farby podczas druku.</dd>
+      <dt>Znaczniki bigowania (fold marks)</dt>
+      <dd>Linie kropkowane wskazujące miejsce falcowania (składania).</dd>
+    </dl>
+  </section>
+
+  <section id="creep">
+    <h2>Kompensacja pełzania</h2>
+    <h3>Co to jest creep i dlaczego ma znaczenie</h3>
+    <p>W oprawie zeszytowej wszystkie składki są zagnieżdżone w sobie. Wewnętrzne strony „wychodzą” poza krawędź zewnętrznych o grubość poprzedzających ich kartek papieru. Po obcięciu zewnętrznej krawędzi marginesy wewnętrznych stron stają się węższe — nawet o kilka milimetrów przy grubszych publikacjach.</p>
+    <p><strong>Kompensacja pełzania</strong> przesuwa treść wewnętrznych stron w kierunku grzbietu, tak aby po obcięciu marginesy były na wszystkich stronach identyczne.</p>
+    <h4>Jak włączyć kompensację</h4>
+    <ol>
+      <li>Otwórz menedżer szablonów</li>
+      <li>W karcie <em>Pełzanie</em> zaznacz <em>Włącz kompensację</em></li>
+      <li>Podaj grubość papieru — typowo 0.1 mm dla papieru 80 g/m², 0.13 mm dla 115 g/m²</li>
+      <li>Włącz opcję <em>Pełzanie</em> w podglądzie, aby zobaczyć pomarańczowe linie kompensacji</li>
+    </ol>
+    <div class="callout warning">
+      <strong>Uwaga:</strong> kompensacja pełzania działa tylko dla oprawy zeszytowej. Przy oprawie klejonej każda składka jest osobna i problem nie występuje.
+    </div>
+  </section>
+
+  <section id="export">
+    <h2>Eksport</h2>
+    <h3>Proces eksportu krok po kroku</h3>
+    <p>Po naciśnięciu <em>Eksportuj</em> (<kbd>Ctrl+E</kbd>) aplikacja wykonuje pełną ścieżkę:</p>
+    <ol>
+      <li><strong>Analiza pliku źródłowego</strong> — odczyt stron, czcionek, obrazów, przezroczystości</li>
+      <li><strong>Preflight</strong> — sprawdzenie poprawności (opcjonalnie w trybie ścisłym: ostrzeżenia przerywają eksport)</li>
+      <li><strong>Kompozycja</strong> — montaż stron na arkuszach zgodnie z szablonem, nanoszenie znaczników</li>
+      <li><strong>Opcjonalnie: PDF/X-4</strong> — konwersja przez Ghostscript z zaaplikowanym profilem ICC</li>
+      <li><strong>Zapis pliku</strong> — gotowy PDF w lokalizacji wskazanej w <em>Plik wyjściowy</em></li>
+    </ol>
+    <h4>Opcje eksportu</h4>
+    <ul>
+      <li><strong>PDF/X-4</strong> — standard drukarski ISO 15930-7. Wymaga zainstalowanego Ghostscript w systemie.</li>
+      <li><strong>Profil ICC</strong> — profil kolorów wyjściowych (np. <em>ISOcoated_v2_eci</em> dla druku offsetowego na papierze kredowanym).</li>
+      <li><strong>Ścisły preflight</strong> — zatrzymaj eksport przy ostrzeżeniach (np. nieosadzone czcionki, brakujące spady).</li>
+      <li><strong>Zakres arkuszy</strong> — eksportuj tylko wybrane arkusze, np. <code>1-5</code>, <code>2,4,6</code>, <code>1,3-7</code>.</li>
+    </ul>
+  </section>
+
+  <section id="pdfx">
+    <h2>PDF/X-4</h2>
+    <h3>Konwersja do standardu drukarskiego</h3>
+    <p><strong>PDF/X-4</strong> (ISO 15930-7) to najnowszy standard PDF dla druku. Obsługuje przezroczystości, warstwy i profile ICC — zalecany przez większość drukarni przy druku offsetowym i cyfrowym.</p>
+    <h4>Wymagania</h4>
+    <ul>
+      <li><strong>Ghostscript</strong> — zainstaluj z <code>ghostscript.com</code>. Podaj ścieżkę w opcjach lub zostaw puste, aby aplikacja wyszukała go automatycznie w PATH.</li>
+      <li><strong>Profil ICC</strong> — plik <code>.icc</code>/<code>.icm</code>. Aplikacja dostarcza standardowe profile w folderze <code>icc/</code>.</li>
+    </ul>
+    <h4>Typowe profile</h4>
+    <ul>
+      <li><strong>ISOcoated_v2_eci.icc</strong> — druk offsetowy, papier kredowany błyszczący</li>
+      <li><strong>PSO_Uncoated_ISO12647_eci.icc</strong> — druk offsetowy, papier niepowlekany</li>
+      <li><strong>sRGB IEC61966-2.1</strong> — druk cyfrowy, wydruki biurowe</li>
+    </ul>
+  </section>
+
+  <section id="stats">
+    <h2>Statystyki</h2>
+    <h3>Panel statystyk zlecenia</h3>
+    <p>Po zaplanowaniu impozycji prawy panel pokazuje szczegółowe statystyki:</p>
+    <ul>
+      <li><strong>Liczba arkuszy i sygnatur</strong> — ile fizycznych arkuszy wyjdzie z maszyny</li>
+      <li><strong>Wypełnione / puste sloty</strong> — ile pozycji na arkuszu jest zajętych stronami dokumentu</li>
+      <li><strong>Powierzchnia papieru</strong> — całkowita (brutto) i netto (po obcięciu) w m²</li>
+      <li><strong>Szacowana waga</strong> — na podstawie gramatury papieru (pole <em>Gramatura (g/m²)</em>)</li>
+      <li><strong>Wykorzystanie papieru</strong> — procent powierzchni, która trafi do finalnej publikacji</li>
+      <li><strong>Odpad</strong> — procent papieru obcinanego do kosza</li>
+      <li><strong>Szacowany koszt</strong> — obliczany z pola <em>Cena za arkusz</em></li>
+      <li><strong>Informacje o oprawie</strong> — typ, stron na sygnaturę, spad, rynienka</li>
+    </ul>
+    <div class="callout">
+      <strong>Wskazówka:</strong> statystyki pomagają szybko porównać dwa warianty szablonu — np. 2×1 na SRA3 vs. 2×2 na B2 — i wybrać bardziej opłacalny.
+    </div>
+  </section>
+
+  <section id="papers">
+    <h2>Własne rozmiary</h2>
+    <h3>Jak dodać własny rozmiar papieru</h3>
+    <ol>
+      <li>Otwórz menedżer szablonów</li>
+      <li>W sekcji <em>Rozmiar arkusza</em> wybierz <em>Własny</em> lub kliknij <em>Dodaj rozmiar</em></li>
+      <li>Podaj nazwę (np. „Banner 520×720”), szerokość i wysokość w milimetrach</li>
+      <li>Kliknij <em>Dodaj</em> — rozmiar pojawi się na liście predefiniowanych</li>
+    </ol>
+    <div class="callout warning">
+      <strong>Uwaga:</strong> wbudowane rozmiary (A4, A3, SRA3, B2, Letter, Legal itp.) nie mogą być nadpisywane. Własne rozmiary są zapamiętywane tylko w bieżącej sesji — zapisz szablon, aby je zachować.
+    </div>
+  </section>
+
+  <section id="cli">
+    <h2>CLI</h2>
+    <h3>Tryb wiersza poleceń — automatyzacja</h3>
+    <p>imPRESS Studio można uruchomić z linii poleceń do zadań wsadowych (hot folder, skrypty, integracja z systemami MIS/ERP):</p>
+    <h4>Impozycja wsadowa</h4>
+    <pre style="background:var(--bg-card-alt);padding:12px 16px;border-radius:6px;overflow-x:auto;font-size:13px;"><code>"imPRESS Studio.exe" impose ^
+    --source wejscie.pdf ^
+    --output wyjscie.pdf ^
+    --template szablon.json ^
+    --pdfx4</code></pre>
+    <h4>Opcje komendy <code>impose</code></h4>
+    <ul>
+      <li><code>--source</code> — ścieżka do pliku źródłowego PDF (wymagane)</li>
+      <li><code>--output</code> — ścieżka pliku wyjściowego (wymagane)</li>
+      <li><code>--template</code> — plik szablonu JSON (wymagane)</li>
+      <li><code>--pdfx4</code> — konwertuj do PDF/X-4 przez Ghostscript</li>
+      <li><code>--gs</code> — ścieżka do Ghostscript (jeśli nie w PATH)</li>
+    </ul>
+    <h4>Narzędzie licencyjne</h4>
+    <pre style="background:var(--bg-card-alt);padding:12px 16px;border-radius:6px;overflow-x:auto;font-size:13px;"><code>"imPRESS Studio.exe" license fingerprint
+"imPRESS Studio.exe" license info
+"imPRESS Studio.exe" license activate --key KLUCZ_BASE64</code></pre>
+  </section>
+
+  <section id="license">
+    <h2>Licencja</h2>
+    <h3>Aktywacja i status licencji</h3>
+    <p>imPRESS Studio używa licencji związanej ze sprzętem (machine-bound). Przy pierwszym uruchomieniu otwiera się okno aktywacji:</p>
+    <ol>
+      <li>Skopiuj <strong>identyfikator maszyny</strong> — unikalny hash Twojego komputera</li>
+      <li>Prześlij go sprzedawcy przy zamawianiu licencji</li>
+      <li>Otrzymasz <strong>klucz aktywacyjny</strong> (długi ciąg w formacie Base64) lub <strong>plik licencji</strong> (<code>.json</code>)</li>
+      <li>Wklej klucz w oknie aktywacji i kliknij <em>Aktywuj licencję</em> — LUB wczytaj plik licencji</li>
+    </ol>
+    <h4>Edycje licencji</h4>
+    <ul>
+      <li><strong>Trial</strong> — 30 dni, pełna funkcjonalność</li>
+      <li><strong>Standard</strong> — podstawowa wersja produkcyjna</li>
+      <li><strong>Professional</strong> — pełna wersja z obsługą PDF/X-4 i CLI</li>
+    </ul>
+    <div class="callout warning">
+      <strong>Uwaga:</strong> licencja jest powiązana z konkretnym komputerem (hash sprzętu). Zmiana płyty głównej, procesora lub reinstalacja systemu może wymagać ponownej aktywacji. Skontaktuj się wtedy ze sprzedawcą.
+    </div>
+  </section>
+
+  <section id="shortcuts">
+    <h2>Skróty</h2>
+    <h3>Skróty klawiaturowe i mysz</h3>
+    <dl class="shortcuts">
+      <dt><kbd>Ctrl+O</kbd></dt><dd>Wczytaj plik PDF</dd>
+      <dt><kbd>Ctrl+P</kbd></dt><dd>Zaplanuj impozycję</dd>
+      <dt><kbd>Ctrl+E</kbd></dt><dd>Eksportuj do PDF</dd>
+      <dt><kbd>Ctrl++</kbd> / <kbd>Ctrl+-</kbd></dt><dd>Przybliż / oddal podgląd</dd>
+      <dt><kbd>Ctrl+0</kbd></dt><dd>Dopasuj widok do okna</dd>
+      <dt><kbd>F</kbd></dt><dd>Dopasuj widok (fit)</dd>
+      <dt><kbd>R</kbd></dt><dd>Obróć widok o 90°</dd>
+      <dt><kbd>←</kbd> / <kbd>→</kbd></dt><dd>Poprzedni / następny arkusz</dd>
+      <dt><kbd>F1</kbd></dt><dd>Otwórz pomoc wewnątrz aplikacji</dd>
+      <dt>Kółko myszy</dt><dd>Zoom względem kursora</dd>
+      <dt>Przeciąganie</dt><dd>Przesuwanie widoku (pan)</dd>
+      <dt>Drag &amp; drop PDF</dt><dd>Wczytaj plik przez upuszczenie</dd>
+    </dl>
+  </section>
+
+  <section id="glossary">
+    <h2>Słowniczek</h2>
+    <h3>Pojęcia z dziedziny impozycji i druku</h3>
+    <dl class="glossary">
+      <dt>Impozycja</dt>
+      <dd>Układanie stron dokumentu na arkuszach drukarskich w takiej kolejności i orientacji, aby po wydrukowaniu, złożeniu i obcięciu powstała gotowa publikacja z poprawną paginacją.</dd>
+      <dt>Sygnatura (składka)</dt>
+      <dd>Grupa stron drukowanych na jednym arkuszu. Typowo 4, 8 lub 16 stron.</dd>
+      <dt>N-Up</dt>
+      <dd>Liczba stron publikacji umieszczonych na jednej stronie arkusza. Np. 2×2 = 4 strony na stronę arkusza.</dd>
+      <dt>Spad (bleed)</dt>
+      <dd>Obszar grafiki wychodzący poza linie cięcia — zabezpiecza przed białymi krawędziami.</dd>
+      <dt>Trim</dt>
+      <dd>Końcowy rozmiar strony po obcięciu spadów.</dd>
+      <dt>Pełzanie (creep)</dt>
+      <dd>Efekt wychodzenia wewnętrznych stron poza krawędź zewnętrznych w oprawie zeszytowej, spowodowany grubością papieru.</dd>
+      <dt>PDF/X-4</dt>
+      <dd>Standard ISO 15930-7 dla plików PDF przeznaczonych do druku — obsługuje przezroczystości, warstwy, profile ICC.</dd>
+      <dt>Preflight</dt>
+      <dd>Automatyczna kontrola poprawności pliku PDF przed drukiem (czcionki, spady, rozdzielczość, przestrzenie barwne).</dd>
+      <dt>Pasery (registration marks)</dt>
+      <dd>Znaczniki krzyżykowe na arkuszu używane do precyzyjnego pasowania separacji CMYK.</dd>
+      <dt>OCG (Optional Content Groups)</dt>
+      <dd>Warstwy w pliku PDF, które można włączać i wyłączać.</dd>
+      <dt>Hot folder</dt>
+      <dd>Folder monitorowany przez oprogramowanie — każdy plik upuszczony w nim jest automatycznie przetwarzany (np. przez CLI).</dd>
+    </dl>
+  </section>
+
+  <section id="troubleshooting">
+    <h2>FAQ techniczne</h2>
+    <h3>Typowe problemy i rozwiązania</h3>
+    <h4>„Brak aktywnej licencji”</h4>
+    <p>Otwórz <em>Licencja</em> w nagłówku i wklej klucz aktywacyjny lub wczytaj plik <code>.json</code> z licencją.</p>
+    <h4>Eksport PDF/X-4 nie działa</h4>
+    <p>Zainstaluj Ghostscript z <code>ghostscript.com</code> i dodaj do PATH. Alternatywnie w opcjach eksportu podaj bezpośrednią ścieżkę do <code>gswin64c.exe</code>.</p>
+    <h4>Podgląd pokazuje czarne strony</h4>
+    <p>Sprawdź, czy plik PDF nie jest zaszyfrowany (<em>Info</em> w lewym panelu). Niektóre PDF-y z ograniczeniami wymagają usunięcia zabezpieczeń.</p>
+    <h4>Strony wychodzą „poza” arkusz</h4>
+    <p>Rozmiar trim + spad + rynienka + marginesy arkusza przekracza rozmiar fizycznego arkusza. Wybierz większy arkusz lub zmniejsz marginesy/spad.</p>
+    <h4>„Plik jest używany przez inny proces” przy eksporcie</h4>
+    <p>Zamknij plik wyjściowy, jeśli otwarty w Acrobacie, przeglądarce lub innym programie. Wybierz inną ścieżkę.</p>
+    <h4>Aplikacja nie widzi pliku licencji po reinstalacji</h4>
+    <p>Licencja jest zapisana w <code>[folder aplikacji]/config/license.json</code>. Skopiuj ten plik ręcznie przed reinstalacją.</p>
+    <h4>Wolny eksport dużych plików</h4>
+    <p>Eksport wieloarkuszowy z PDF/X-4 jest operacją intensywną. Rozważ eksport bez PDF/X-4 i konwersję zbiorczą przez Ghostscript skryptem shell.</p>
+  </section>
+
+</div>
+
+<footer>
+  <p>imPRESS Studio — profesjonalne narzędzie do impozycji PDF<br>
+  © 2026 Wojciech Bujacz — <a href="mailto:wojciech.bujacz@hotmail.com">wojciech.bujacz@hotmail.com</a></p>
+  <p>.NET 8  |  Avalonia 11  |  PdfPig  |  PdfSharpCore  |  Ghostscript</p>
+</footer>
+
+</body>
+</html>
