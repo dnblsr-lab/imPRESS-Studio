@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>imPRESS Studio — FAQ / Najczęściej zadawane pytania</title>
+<meta name="description" content="Odpowiedzi na najczęściej zadawane pytania o imPRESS Studio: instalacja, licencjonowanie, szablony, eksport PDF/X-4, pełzanie, różnice vs Acrobat i inne.">
+<style>
+  :root {
+    --bg: #0f1419;
+    --bg-card: #141a22;
+    --bg-card-alt: #1a2028;
+    --border: #232c38;
+    --text: #e6edf3;
+    --text-muted: #94a3b8;
+    --text-soft: #c9d5e3;
+    --accent: #2563eb;
+    --accent-light: #58a6ff;
+    --success: #22c55e;
+    --warning: #f59e0b;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    font-size: 16px;
+  }
+  .container { max-width: 860px; margin: 0 auto; padding: 40px 24px; }
+  header {
+    background: linear-gradient(135deg, #141a22 0%, #1a2028 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 48px 24px;
+    text-align: center;
+  }
+  header .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  header .logo-mark {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 28px;
+    color: #fff;
+  }
+  header h1 { margin: 0; font-size: 36px; font-weight: 800; letter-spacing: -0.5px; }
+  header .subtitle { color: var(--text-muted); font-size: 15px; margin-top: 8px; }
+  .category {
+    margin: 32px 0 16px 0;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent-light);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  details {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    transition: border-color 0.15s;
+  }
+  details[open] { border-color: var(--accent); }
+  summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--text);
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-right: 8px;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::before {
+    content: "+";
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    background: var(--bg-card-alt);
+    color: var(--accent-light);
+    font-size: 18px;
+    font-weight: 700;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+  details[open] summary::before {
+    content: "−";
+    background: var(--accent);
+    color: #fff;
+  }
+  details > div.answer {
+    padding-top: 12px;
+    margin-top: 12px;
+    border-top: 1px solid var(--border);
+    color: var(--text-soft);
+  }
+  details p { margin: 8px 0; }
+  details ul, details ol { padding-left: 20px; color: var(--text-soft); }
+  details li { margin: 4px 0; }
+  details strong { color: var(--text); }
+  details code {
+    font-family: "JetBrains Mono", Consolas, Menlo, monospace;
+    font-size: 13px;
+    background: var(--bg-card-alt);
+    padding: 1px 6px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+  }
+  kbd {
+    display: inline-block;
+    padding: 2px 8px;
+    font-family: "JetBrains Mono", Consolas, Menlo, monospace;
+    font-size: 12px;
+    background: var(--bg-card-alt);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text);
+  }
+  .intro {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin-bottom: 24px;
+    color: var(--text-soft);
+  }
+  .intro p { margin: 0; }
+  .intro a { color: var(--accent-light); }
+  footer {
+    padding: 32px 24px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+  footer a { color: var(--accent-light); text-decoration: none; }
+  @media (max-width: 700px) {
+    header h1 { font-size: 28px; }
+    details { padding: 14px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-mark">i</div>
+    <div>
+      <h1>FAQ</h1>
+      <div class="subtitle">Najczęściej zadawane pytania — imPRESS Studio</div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="intro">
+    <p>Znajdziesz tu odpowiedzi na najczęstsze pytania dotyczące imPRESS Studio. Jeśli nie ma odpowiedzi na Twoje pytanie, sprawdź <a href="help.html">pełną instrukcję</a> albo skontaktuj się bezpośrednio: <a href="mailto:wojciech.bujacz@hotmail.com">wojciech.bujacz@hotmail.com</a>.</p>
+  </div>
+
+  <div class="category">Informacje ogólne</div>
+
+  <details>
+    <summary>Czym jest imPRESS Studio i dla kogo jest przeznaczony?</summary>
+    <div class="answer">
+      <p>imPRESS Studio to profesjonalne narzędzie do impozycji plików PDF — układa strony dokumentu na arkuszach drukarskich zgodnie z zadanym szablonem (oprawa zeszytowa, klejona, falcowanie) i eksportuje gotowy plik do druku.</p>
+      <p>Aplikacja jest przeznaczona dla:</p>
+      <ul>
+        <li>Drukarni cyfrowych i offsetowych</li>
+        <li>Studiów DTP i agencji reklamowych</li>
+        <li>Fotografów przygotowujących albumy i książki fotograficzne</li>
+        <li>Wydawców self-publishing</li>
+        <li>Grafików freelancerów przygotowujących materiały do druku</li>
+      </ul>
+    </div>
+  </details>
+
+  <details>
+    <summary>Czym imPRESS Studio różni się od Adobe Acrobat lub InDesign?</summary>
+    <div class="answer">
+      <p><strong>InDesign</strong> jest narzędziem do projektowania publikacji — impozycja nie jest jego głównym przeznaczeniem i wymaga dodatkowych wtyczek lub eksportu do zewnętrznych narzędzi.</p>
+      <p><strong>Acrobat</strong> potrafi podstawowe N-Up przy druku, ale nie tworzy pełnej impozycji z sygnaturami, creep, paserami i znacznikami drukarskimi.</p>
+      <p><strong>imPRESS Studio</strong> jest wyspecjalizowanym narzędziem impozycji — robi jedną rzecz i robi ją dokładnie, z pełną kontrolą nad szablonami, marginesami i znacznikami, bez konieczności kupowania całego pakietu Adobe Creative Cloud.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Jakie są wymagania systemowe?</summary>
+    <div class="answer">
+      <ul>
+        <li><strong>System:</strong> Windows 10 lub nowszy (64-bit)</li>
+        <li><strong>Runtime:</strong> .NET 8 (samowystarczalna wersja nie wymaga instalacji)</li>
+        <li><strong>RAM:</strong> min. 4 GB, zalecane 8 GB dla dużych plików</li>
+        <li><strong>Dysk:</strong> ~200 MB + miejsce na pliki PDF</li>
+        <li><strong>Opcjonalnie:</strong> Ghostscript 10+ (dla konwersji PDF/X-4)</li>
+      </ul>
+    </div>
+  </details>
+
+  <div class="category">Instalacja i licencja</div>
+
+  <details>
+    <summary>Jak zainstalować imPRESS Studio?</summary>
+    <div class="answer">
+      <p>Aplikacja dostarczana jest jako plik ZIP z gotowym folderem. Rozpakuj go w dowolnej lokalizacji (np. <code>C:\Program Files\imPRESS Studio</code>) i uruchom <code>imPRESS Studio.exe</code>.</p>
+      <p>Nie wymaga standardowego instalatora — jest aplikacją przenośną. Można ją uruchomić z dysku zewnętrznego lub folderu użytkownika.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Jak aktywować licencję?</summary>
+    <div class="answer">
+      <ol>
+        <li>Uruchom aplikację — przy braku licencji automatycznie otworzy się okno aktywacji. Możesz też otworzyć je ręcznie przyciskiem <em>Licencja</em> w nagłówku.</li>
+        <li>Skopiuj <strong>identyfikator maszyny</strong> (przycisk <em>Kopiuj</em>) i wyślij go sprzedawcy przy zamówieniu.</li>
+        <li>Otrzymasz klucz aktywacyjny (długi ciąg Base64) lub plik licencji (<code>.json</code>).</li>
+        <li>Wklej klucz w pole <em>Klucz aktywacyjny</em> i kliknij <em>Aktywuj licencję</em> — lub wczytaj plik licencji.</li>
+      </ol>
+    </div>
+  </details>
+
+  <details>
+    <summary>Czy licencja działa po przeniesieniu na inny komputer?</summary>
+    <div class="answer">
+      <p>Nie. Licencja jest powiązana z hashem sprzętowym komputera (identyfikator maszyny). Po przeniesieniu na inny komputer musisz otrzymać nową licencję — skontaktuj się ze sprzedawcą.</p>
+      <p>Hash sprzętu obliczany jest z numeru seryjnego płyty głównej, dysku systemowego i nazwy komputera. Zmiana jednego z tych elementów może spowodować unieważnienie licencji.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Czy jest dostępna wersja próbna?</summary>
+    <div class="answer">
+      <p>Tak — dostępna jest 30-dniowa licencja Trial z pełną funkcjonalnością. Wystarczy poprosić o klucz Trial przy użyciu identyfikatora maszyny. Po okresie próbnym aplikacja nadal się uruchamia, ale funkcje eksportu są niedostępne.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Jakie są edycje licencji?</summary>
+    <div class="answer">
+      <ul>
+        <li><strong>Trial</strong> — 30 dni, pełna funkcjonalność do testów</li>
+        <li><strong>Standard</strong> — produkcyjna wersja z podstawowym eksportem</li>
+        <li><strong>Professional</strong> — pełna wersja z konwersją PDF/X-4, trybem CLI i wszystkimi typami oprawy</li>
+      </ul>
+    </div>
+  </details>
+
+  <details>
+    <summary>Co robić, gdy licencja wygaśnie?</summary>
+    <div class="answer">
+      <p>14 dni przed wygaśnięciem aplikacja pokaże ostrzeżenie w pasku stanu. Skontaktuj się ze sprzedawcą, aby otrzymać nowy klucz — wklej go w oknie <em>Licencja</em>, zastępując stary.</p>
+      <p>Po wygaśnięciu aplikacja nadal uruchamia się, ale funkcje eksportu są zablokowane do odnowienia licencji.</p>
+    </div>
+  </details>
+
+  <div class="category">Szablony i impozycja</div>
+
+  <details>
+    <summary>Jak utworzyć szablon broszury zeszytowej A5?</summary>
+    <div class="answer">
+      <ol>
+        <li>Otwórz <em>Menedżer szablonów</em> i kliknij <em>Nowy</em></li>
+        <li>Nazwa: <code>Broszura A5 — zeszytowa</code></li>
+        <li>Typ oprawy: <strong>Zeszytowa (saddle stitch)</strong></li>
+        <li>Rozmiar arkusza: <strong>SRA3</strong> (320×450 mm)</li>
+        <li>Trim: <strong>A5</strong> (148×210 mm)</li>
+        <li>N-Up: <strong>2×1</strong></li>
+        <li>Stron na sygnaturę: <strong>8</strong> (lub 16 dla dłuższych publikacji)</li>
+        <li>Spad: 3 mm, strefa bezpieczna: 5 mm, rynienka: 5 mm</li>
+        <li>Znaczniki: cięcia, pasery, paski kolorów</li>
+        <li>Zapisz szablon</li>
+      </ol>
+    </div>
+  </details>
+
+  <details>
+    <summary>Co wybrać: oprawę zeszytową czy klejoną?</summary>
+    <div class="answer">
+      <p><strong>Zeszytowa (saddle stitch)</strong> — dla publikacji do ~60 stron: broszury, katalogi, foldery. Tańsza, szybsza w produkcji, ale wymaga kompensacji pełzania.</p>
+      <p><strong>Klejona (perfect bound)</strong> — dla grubszych publikacji (powyżej 50 stron): książki, katalogi, magazyny. Ma grzbiet, wygląda profesjonalnie, ale wymaga osobnego drukowania każdej składki.</p>
+      <p>Zasada kciuka: przy publikacji do 48 stron — zeszytowa; powyżej 64 stron — klejona; między 48-64 stron oceniaj indywidualnie (grubość papieru, estetyka).</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Ile stron musi mieć dokument do oprawy zeszytowej?</summary>
+    <div class="answer">
+      <p>Liczba stron musi być <strong>podzielna przez 4</strong> (jedna kartka = 4 strony druku). Typowo szablon ustawia 8 lub 16 stron na sygnaturę — wtedy liczba musi być wielokrotnością tej wartości.</p>
+      <p>Jeśli dokument ma np. 31 stron, uzupełnij go do 32 przez dodanie pustej strony lub skróć do 28 stron. imPRESS Studio doda pustą stronę automatycznie jeśli to potrzebne, ale lepiej mieć to pod kontrolą w pliku źródłowym.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Co to jest N-Up i jak wybrać odpowiedni?</summary>
+    <div class="answer">
+      <p>N-Up to liczba stron publikacji na jednej stronie arkusza. Zapis <code>X×Y</code> oznacza X stron w poziomie i Y w pionie.</p>
+      <ul>
+        <li><strong>1×1</strong> — jedna strona na arkusz (druk testowy)</li>
+        <li><strong>2×1</strong> — klasyczna broszura: A5 na SRA3, A4 na B2</li>
+        <li><strong>2×2</strong> — 4 strony na arkusz: A6 na SRA3, A5 na B2</li>
+        <li><strong>4×2</strong> — 8 strony na arkusz: wizytówki, etykiety</li>
+      </ul>
+      <p>Wybór zależy od rozmiaru trim vs. rozmiaru arkusza dostępnej prasy. imPRESS Studio automatycznie weryfikuje, czy N-Up mieści się na arkuszu z uwzględnieniem spadów i marginesów.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Czy mogę scalić kilka plików PDF przed impozycją?</summary>
+    <div class="answer">
+      <p>Tak. Dodaj wszystkie pliki do listy w lewym panelu (<em>+ Dodaj pliki…</em> lub drag &amp; drop), zaznacz checkboxy przy tych, które mają być scalone, i kliknij <em>Wczytaj zaznaczone</em>. Pliki zostaną połączone w kolejności widocznej na liście — kolejność możesz zmieniać strzałkami ▲▼.</p>
+    </div>
+  </details>
+
+  <div class="category">Eksport i PDF/X-4</div>
+
+  <details>
+    <summary>Dlaczego warto używać PDF/X-4?</summary>
+    <div class="answer">
+      <p>PDF/X-4 (ISO 15930-7) to standard zapewniający przewidywalność na druku — wszystkie czcionki są osadzone, kolory mają zdefiniowany profil, przezroczystości i warstwy są obsługiwane poprawnie.</p>
+      <p>Większość drukarni <strong>wymaga</strong> plików w formacie PDF/X-4 lub PDF/X-1a. Eksport bez tej konwersji może być odrzucony lub wymagać ręcznej poprawy w preflight.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Jak zainstalować Ghostscript?</summary>
+    <div class="answer">
+      <ol>
+        <li>Pobierz ze strony <code>ghostscript.com/releases/gsdnld.html</code></li>
+        <li>Wybierz wersję <em>Ghostscript AGPL Release</em>, plik <code>gs*w64.exe</code> dla 64-bit</li>
+        <li>Zainstaluj w domyślnej lokalizacji (<code>C:\Program Files\gs\gs[version]\</code>)</li>
+        <li>Opcjonalnie dodaj do PATH — wtedy imPRESS Studio znajdzie go automatycznie</li>
+        <li>W opcjach eksportu imPRESS Studio możesz też ręcznie wskazać ścieżkę do <code>gswin64c.exe</code></li>
+      </ol>
+    </div>
+  </details>
+
+  <details>
+    <summary>Jaki profil ICC wybrać?</summary>
+    <div class="answer">
+      <p>Zapytaj drukarnię — zwykle mają rekomendacje. Typowe wybory:</p>
+      <ul>
+        <li><strong>Offset na kredzie błyszczącym:</strong> ISOcoated_v2_eci, FOGRA39L</li>
+        <li><strong>Offset na papierze niepowlekanym:</strong> PSO_Uncoated_ISO12647_eci, FOGRA47L</li>
+        <li><strong>Druk cyfrowy:</strong> sRGB IEC61966-2.1</li>
+        <li><strong>Gazety:</strong> ISOnewspaper26v4, WAN-IFRAnewspaper26v5</li>
+      </ul>
+      <p>Standardowe profile znajdziesz w folderze <code>icc/</code> aplikacji. Możesz też wskazać własny profil ICC w opcjach eksportu.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Jak wyeksportować tylko wybrane arkusze?</summary>
+    <div class="answer">
+      <p>W oknie <em>Opcje eksportu</em> w polu <em>Zakres arkuszy</em> podaj arkusze w formacie:</p>
+      <ul>
+        <li><code>1-5</code> — arkusze od 1 do 5</li>
+        <li><code>2,4,6</code> — pojedyncze arkusze</li>
+        <li><code>1,3-7,10</code> — kombinacja</li>
+        <li>pusto — wszystkie arkusze</li>
+      </ul>
+      <p>Przydatne do testowego druku pierwszego arkusza lub do reprintu konkretnej strony.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Eksport jest bardzo wolny — co robić?</summary>
+    <div class="answer">
+      <p>Spróbuj po kolei:</p>
+      <ul>
+        <li>Wyłącz <em>PDF/X-4</em> — konwersja Ghostscript znacząco wydłuża eksport</li>
+        <li>Sprawdź rozmiar pliku źródłowego — PDF-y z obrazami wysokiej rozdzielczości i przezroczystościami są wolniejsze</li>
+        <li>Eksportuj mniejszy zakres arkuszy (np. 1-10 zamiast wszystkich)</li>
+        <li>Zamknij inne aplikacje — impozycja jest CPU-intensywna</li>
+        <li>Dla zadań wsadowych użyj trybu CLI w nocnym skrypcie</li>
+      </ul>
+    </div>
+  </details>
+
+  <div class="category">Problemy techniczne</div>
+
+  <details>
+    <summary>Podgląd pokazuje puste strony lub „czarne prostokąty”</summary>
+    <div class="answer">
+      <p>Sprawdź status pliku w <em>Info</em> (lewy panel). Typowe przyczyny:</p>
+      <ul>
+        <li><strong>PDF zaszyfrowany</strong> — wymaga usunięcia ochrony w Acrobacie lub innym narzędziu</li>
+        <li><strong>Nieosadzone czcionki</strong> — użyj Acrobat → Preflight → „Embed all fonts”</li>
+        <li><strong>Uszkodzony PDF</strong> — otwórz w Acrobacie i zapisz ponownie</li>
+      </ul>
+    </div>
+  </details>
+
+  <details>
+    <summary>Ikona aplikacji nie pokazuje się na pasku zadań</summary>
+    <div class="answer">
+      <p>Windows cachuje ikony. Spróbuj:</p>
+      <ul>
+        <li>Odepnij aplikację z paska zadań i przypnij ponownie</li>
+        <li>Uruchom <code>ie4uinit.exe -show</code> w wierszu poleceń</li>
+        <li>W ostateczności: <code>taskkill /f /im explorer.exe</code> a następnie <code>start explorer.exe</code></li>
+      </ul>
+    </div>
+  </details>
+
+  <details>
+    <summary>Błąd „Access denied” przy zapisie pliku</summary>
+    <div class="answer">
+      <p>Sprawdź czy:</p>
+      <ul>
+        <li>Plik wyjściowy nie jest otwarty w Acrobacie, przeglądarce lub innym programie</li>
+        <li>Masz uprawnienia zapisu do wybranego folderu (nie zapisuj do <code>C:\Program Files\</code> bez UAC)</li>
+        <li>Antywirus nie blokuje aplikacji — dodaj wyjątek dla folderu imPRESS Studio</li>
+      </ul>
+    </div>
+  </details>
+
+  <details>
+    <summary>Jak zgłosić błąd lub zaproponować funkcję?</summary>
+    <div class="answer">
+      <p>Wyślij email na <a href="mailto:wojciech.bujacz@hotmail.com">wojciech.bujacz@hotmail.com</a> z:</p>
+      <ul>
+        <li>Opisem problemu lub propozycji</li>
+        <li>Wersją aplikacji (<em>O programie</em>)</li>
+        <li>Wersją systemu Windows</li>
+        <li>W przypadku błędu — plikiem logu z folderu <code>logs/</code> aplikacji</li>
+        <li>(Opcjonalnie) plikiem PDF lub szablonem, który powoduje problem</li>
+      </ul>
+    </div>
+  </details>
+
+  <div class="category">Automatyzacja i CLI</div>
+
+  <details>
+    <summary>Czy można uruchomić imPRESS Studio z linii poleceń?</summary>
+    <div class="answer">
+      <p>Tak. Pełna impozycja w trybie wsadowym:</p>
+      <pre style="background:var(--bg-card-alt);padding:12px;border-radius:6px;overflow-x:auto;font-size:13px;margin:8px 0;"><code>"imPRESS Studio.exe" impose --source in.pdf --output out.pdf --template tpl.json --pdfx4</code></pre>
+      <p>Kod wyjścia <code>0</code> oznacza sukces, <code>1</code> lub <code>2</code> — błąd (zobacz logi).</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Czy można zautomatyzować impozycję „hot folder”?</summary>
+    <div class="answer">
+      <p>Tak — napisz prosty skrypt PowerShell monitorujący folder i wywołujący CLI:</p>
+      <pre style="background:var(--bg-card-alt);padding:12px;border-radius:6px;overflow-x:auto;font-size:12px;margin:8px 0;"><code>$watcher = New-Object System.IO.FileSystemWatcher
+$watcher.Path = "C:\hotfolder"
+$watcher.Filter = "*.pdf"
+Register-ObjectEvent $watcher "Created" -Action {
+  $src = $Event.SourceEventArgs.FullPath
+  $dst = $src -replace ".pdf$","_imposed.pdf"
+  & "C:\apps\imPRESS Studio\imPRESS Studio.exe" impose `
+    --source $src --output $dst --template "C:\templates\standard.json" --pdfx4
+}</code></pre>
+    </div>
+  </details>
+
+  <details>
+    <summary>Czy szablony można tworzyć programowo?</summary>
+    <div class="answer">
+      <p>Tak — szablon to zwykły plik JSON, który można generować skryptem. Wyeksportuj jeden szablon z GUI jako punkt odniesienia, następnie modyfikuj pola w JSON (nazwa, rozmiar, N-Up, marginesy, znaczniki) i zapisz jako nowy plik. CLI przyjmie go bez zmian.</p>
+    </div>
+  </details>
+
+</div>
+
+<footer>
+  <p>imPRESS Studio — profesjonalne narzędzie do impozycji PDF<br>
+  © 2026 Wojciech Bujacz — <a href="mailto:wojciech.bujacz@hotmail.com">wojciech.bujacz@hotmail.com</a></p>
+  <p><a href="help.html">Pełna instrukcja</a>  |  <a href="changelog.html">Historia wersji</a></p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>imPRESS Studio — Historia wersji / Changelog</title>
+<meta name="description" content="Historia zmian imPRESS Studio — pełny changelog wszystkich wydań z opisem nowych funkcji, poprawek i ulepszeń.">
+<style>
+  :root {
+    --bg: #0f1419;
+    --bg-card: #141a22;
+    --bg-card-alt: #1a2028;
+    --border: #232c38;
+    --text: #e6edf3;
+    --text-muted: #94a3b8;
+    --text-soft: #c9d5e3;
+    --accent: #2563eb;
+    --accent-light: #58a6ff;
+    --success: #22c55e;
+    --warning: #f59e0b;
+    --info: #06b6d4;
+    --danger: #ef4444;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    font-size: 16px;
+  }
+  .container { max-width: 860px; margin: 0 auto; padding: 40px 24px; }
+  header {
+    background: linear-gradient(135deg, #141a22 0%, #1a2028 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 48px 24px;
+    text-align: center;
+  }
+  header .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  header .logo-mark {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 28px;
+    color: #fff;
+  }
+  header h1 { margin: 0; font-size: 36px; font-weight: 800; letter-spacing: -0.5px; }
+  header .subtitle { color: var(--text-muted); font-size: 15px; margin-top: 8px; }
+  .intro {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 32px;
+    color: var(--text-soft);
+  }
+  .intro p { margin: 0; }
+  .intro a { color: var(--accent-light); }
+  .release {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .release.latest {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent);
+  }
+  .release-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+  .version {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.5px;
+  }
+  .date { color: var(--text-muted); font-size: 14px; }
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .badge.latest { background: var(--accent); color: #fff; }
+  .badge.stable { background: rgba(34, 197, 94, 0.15); color: var(--success); border: 1px solid rgba(34,197,94,0.3); }
+  .badge.beta { background: rgba(245, 158, 11, 0.15); color: var(--warning); border: 1px solid rgba(245,158,11,0.3); }
+  .codename {
+    color: var(--accent-light);
+    font-style: italic;
+    font-size: 14px;
+    margin-bottom: 16px;
+  }
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-top: 18px;
+    margin-bottom: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-label::before {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+  .section-label.added { color: var(--success); }
+  .section-label.changed { color: var(--accent-light); }
+  .section-label.fixed { color: var(--warning); }
+  .section-label.removed { color: var(--danger); }
+  .section-label.security { color: var(--info); }
+  .release ul { padding-left: 22px; margin: 4px 0 0 0; color: var(--text-soft); }
+  .release li { margin: 4px 0; }
+  .release strong { color: var(--text); }
+  .release code {
+    font-family: "JetBrains Mono", Consolas, Menlo, monospace;
+    font-size: 13px;
+    background: var(--bg-card-alt);
+    padding: 1px 6px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+  }
+  footer {
+    padding: 32px 24px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+  footer a { color: var(--accent-light); text-decoration: none; }
+  @media (max-width: 700px) {
+    header h1 { font-size: 28px; }
+    .release { padding: 20px; }
+    .version { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-mark">i</div>
+    <div>
+      <h1>Changelog</h1>
+      <div class="subtitle">Historia wersji imPRESS Studio</div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="intro">
+    <p>Tu znajdziesz pełną historię wszystkich wydań imPRESS Studio z opisem nowych funkcji, ulepszeń i poprawek. Format zgodny z <a href="https://keepachangelog.com/pl/1.1.0/">Keep a Changelog</a>, wersjonowanie <a href="https://semver.org/lang/pl/">Semantic Versioning</a>.</p>
+  </div>
+
+  <!-- v1.01 -->
+  <article class="release latest">
+    <div class="release-header">
+      <span class="version">1.01</span>
+      <span class="date">19 kwietnia 2026</span>
+      <span class="badge latest">Najnowsza</span>
+      <span class="badge stable">Stabilna</span>
+    </div>
+    <div class="codename">„Polish Pass” — menu, ustawienia i gang-run</div>
+
+    <div class="section-label added">Nowe funkcje</div>
+    <ul>
+      <li><strong>Pasek menu aplikacji</strong> — <em>Plik</em>, <em>Edycja</em>, <em>Widok</em>, <em>Narzędzia</em>, <em>Ustawienia</em>, <em>Pomoc</em> ze skrótami klawiaturowymi widocznymi w pozycjach menu</li>
+      <li><strong>Okno ustawień aplikacji</strong> — wybór języka interfejsu (polski / angielski), konfiguracja zapisywana w <code>%APPDATA%\imPRESS Studio\settings.json</code></li>
+      <li><strong>Infrastruktura tłumaczeń (i18n)</strong> — słowniki PL/EN, markup <code>{loc:Loc Key}</code> w XAML, serwis <code>LocalizationService</code> z powiadamianiem o zmianie języka</li>
+      <li><strong>Szablony gang-run 3+</strong> — <em>DL Ulotka 3-up</em> (99×210, 3×1 na SRA3), <em>Wizytówki 6-up</em> (90×50, 3×2), <em>Wizytówki 8-up</em> (85×55, 4×2), <em>Wizytówki 12-up</em> (85×55, 4×3) z walidacją mieszczenia na arkuszu</li>
+    </ul>
+
+    <div class="section-label changed">Zmiany</div>
+    <ul>
+      <li>Przycisk „O programie” przeniesiony z nagłówka do menu <em>Pomoc</em> — czystszy layout paska tytułowego</li>
+      <li>Wybór języka usunięty z okna „O programie” i przeniesiony do nowego okna <em>Ustawienia</em></li>
+      <li>Wersja aplikacji podniesiona z 1.00 na 1.01 (okno „O programie” oraz zasoby)</li>
+      <li>Pełny przegląd tekstów w UI — uzupełnione polskie znaki diakrytyczne w komunikatach statusowych, tooltipach i oknach dialogowych</li>
+    </ul>
+  </article>
+
+  <!-- v1.00 -->
+  <article class="release">
+    <div class="release-header">
+      <span class="version">1.00</span>
+      <span class="date">18 kwietnia 2026</span>
+      <span class="badge stable">Stabilna</span>
+    </div>
+    <div class="codename">„First Impress” — pierwsza oficjalna wersja produkcyjna</div>
+
+    <div class="section-label added">Nowe funkcje</div>
+    <ul>
+      <li><strong>System licencjonowania</strong> — aktywacja kluczem Base64 lub plikiem <code>.json</code>, powiązanie z hashem sprzętu, obsługa edycji Trial / Standard / Professional, wygasanie z 14-dniowym ostrzeżeniem</li>
+      <li><strong>Okno aktywacji licencji</strong> — pokazuje identyfikator maszyny z przyciskiem kopiowania, pole na klucz aktywacyjny, opcja wczytania pliku licencji</li>
+      <li><strong>Ikona aplikacji</strong> — nowa ikona programu (<code>ikona.ico</code>) i logo (<code>logo.png</code>) osadzone w exe i oknach dialogowych</li>
+      <li><strong>CLI licencyjne</strong> — komendy <code>license keygen</code>, <code>license fingerprint</code>, <code>license issue</code>, <code>license activate</code>, <code>license info</code></li>
+      <li><strong>Panel informacji o pliku PDF</strong> — dialog z ikoną „i”, pełne metadane (wymiary, trim, czcionki, kolory, przezroczystości, szyfrowanie, OCG, tagowanie)</li>
+      <li><strong>Rebranding</strong> — zmiana nazwy z „Imposition Studio” na „imPRESS Studio” we wszystkich oknach, pliku wykonywalnym i CLI</li>
+      <li><strong>Rozszerzony lewy panel</strong> — z 320 do 380 px dla lepszej czytelności kart i etykiet</li>
+    </ul>
+
+    <div class="section-label changed">Zmiany</div>
+    <ul>
+      <li>Plik wykonywalny przemianowany z <code>ImpositionApp.exe</code> na <code>imPRESS Studio.exe</code></li>
+      <li>Wszystkie okna dialogowe otrzymały spójną ikonę w tytule</li>
+      <li>Przeorganizowany układ okna „O programie” z nowym logo</li>
+    </ul>
+
+    <div class="section-label security">Bezpieczeństwo</div>
+    <ul>
+      <li>Weryfikacja licencji podpisem RSA-2048 — klucz prywatny nigdy nie trafia do aplikacji</li>
+      <li>Hash sprzętu SHA-256 z numeru seryjnego płyty głównej, dysku i nazwy komputera</li>
+    </ul>
+  </article>
+
+  <!-- v0.9 beta -->
+  <article class="release">
+    <div class="release-header">
+      <span class="version">0.9</span>
+      <span class="date">10 kwietnia 2026</span>
+      <span class="badge beta">Beta</span>
+    </div>
+    <div class="codename">„Release Candidate” — ostatnie testy przed wydaniem 1.0</div>
+
+    <div class="section-label added">Nowe funkcje</div>
+    <ul>
+      <li><strong>Multi-file loader</strong> — obsługa wielu plików PDF jednocześnie z checkboxami do selektywnego wczytania</li>
+      <li><strong>Scalanie plików źródłowych</strong> — zaznaczenie kilku plików łączy je w jeden dokument przed impozycją</li>
+      <li><strong>Zmiana kolejności plików</strong> — strzałki ▲▼ do układania listy przed scaleniem</li>
+      <li><strong>Info o pliku</strong> — okno z pełnymi metadanymi wybranego PDF-a</li>
+      <li><strong>Reset all</strong> — przycisk czyszczący projekt do ustawień początkowych</li>
+    </ul>
+
+    <div class="section-label changed">Zmiany</div>
+    <ul>
+      <li>Przebudowany panel plików źródłowych — lista zastąpiła pojedynczy wybór</li>
+      <li>Przycisk „Wczytaj zaznaczone” zamiast „Wczytaj plik”</li>
+    </ul>
+
+    <div class="section-label fixed">Poprawki</div>
+    <ul>
+      <li>Naprawiono zawieszenie przy próbie wczytania zaszyfrowanego PDF-a</li>
+      <li>Poprawiono wyświetlanie nazwy szablonu w pasku tytułu</li>
+    </ul>
+  </article>
+
+  <!-- v0.8 -->
+  <article class="release">
+    <div class="release-header">
+      <span class="version">0.8</span>
+      <span class="date">28 marca 2026</span>
+      <span class="badge beta">Beta</span>
+    </div>
+    <div class="codename">„Polish &amp; Stats” — dopracowanie UI i panel statystyk</div>
+
+    <div class="section-label added">Nowe funkcje</div>
+    <ul>
+      <li><strong>Panel statystyk</strong> — powierzchnia papieru, wykorzystanie, odpad, szacowanie kosztów, waga</li>
+      <li><strong>NumericUpDown</strong> dla ceny za arkusz i gramatury papieru — kalkulacje w czasie rzeczywistym</li>
+      <li><strong>Progress bary</strong> dla wykorzystania papieru i odpadu</li>
+      <li><strong>Karta informacji o oprawie</strong> — typ, stron na sygnaturę, spad, rynienka</li>
+      <li><strong>Pasek miniatur arkuszy</strong> — szybka nawigacja na dole okna podglądu</li>
+    </ul>
+
+    <div class="section-label changed">Zmiany</div>
+    <ul>
+      <li>Przebudowane menu nagłówka — przyciski <em>Szablon</em>, <em>Opcje eksportu</em>, <em>Pomoc</em>, <em>Licencja</em>, <em>O programie</em></li>
+      <li>Wyraźne rozdzielenie trzech paneli kolorami i liniami</li>
+    </ul>
+  </article>
+
+  <!-- v0.7 -->
+  <article class="release">
+    <div class="release-header">
+      <span class="version">0.7</span>
+      <span class="date">15 marca 2026</span>
+      <span class="badge beta">Beta</span>
+    </div>
+    <div class="codename">„Preview Master” — interaktywny podgląd arkuszy</div>
+
+    <div class="section-label added">Nowe funkcje</div>
+    <ul>
+      <li><strong>Interaktywny podgląd</strong> na <code>ImpositionCanvas</code> — rendering stron na arkuszu z pełną precyzją drukarską</li>
+      <li><strong>Zoom względem kursora</strong> — przybliżenie kółkiem myszy skupia się na wskazywanym miejscu</li>
+      <li><strong>Pan (przesuwanie)</strong> — przeciąganie myszą po arkuszu</li>
+      <li><strong>Obrót widoku</strong> o 90° (klawisz <kbd>R</kbd>)</li>
+      <li><strong>Tryb rozkładówki</strong> — przód i tył arkusza obok siebie</li>
+      <li><strong>Wizualizacja pełzania (creep)</strong> — pomarańczowe linie przerywane</li>
+      <li><strong>Symulacja nadruku</strong> — multiply blend dla ciemnienia CMYK</li>
+      <li><strong>Skróty klawiaturowe</strong> — <kbd>Ctrl+P</kbd>, <kbd>Ctrl+E</kbd>, <kbd>Ctrl+O</kbd>, <kbd>Ctrl+0</kbd>, <kbd>F</kbd>, <kbd>R</kbd>, <kbd>←</kbd>/<kbd>→</kbd></li>
+    </ul>
+  </article>
+
+  <!-- v0.6 -->
+  <article class="release">
+    <div class="release-header">
+      <span class="version">0.6</span>
+      <span class="date">25 lutego 2026</span>
+      <span class="badge beta">Beta</span>
+    </div>
+    <div class="codename">„Print Marks &amp; Creep”</div>
+
+    <div class="section-label added">Nowe funkcje</div>
+    <ul>
+      <li><strong>Znaczniki drukarskie</strong> — linie cięcia, pasery (registration marks), paski kolorów CMYK, znaczniki bigowania</li>
+      <li><strong>Kompensacja pełzania</strong> dla oprawy zeszytowej — z konfiguracją grubości papieru</li>
+      <li><strong>Opcje falcowania</strong> — Z-fold i harmonijka z konfigurowalną liczbą paneli</li>
+      <li><strong>Własne rozmiary papieru</strong> — dodawanie rozmiarów poza listą predefiniowaną</li>
+    </ul>
+
+    <div class="section-label changed">Zmiany</div>
+    <ul>
+      <li>Rozszerzona obsługa marginesów: spad, strefa bezpieczna, rynienka, grzbiet, margines arkusza</li>
+    </ul>
+  </article>
+
+  <!-- v0.5 -->
+  <article class="release">
+    <div class="release-header">
+      <span class="version">0.5</span>
+      <span class="date">10 lutego 2026</span>
+      <span class="badge beta">Beta</span>
+    </div>
+    <div class="codename">„PDF/X-4 &amp; Ghostscript”</div>
+
+    <div class="section-label added">Nowe funkcje</div>
+    <ul>
+      <li><strong>Konwersja do PDF/X-4</strong> przez Ghostscript — standard ISO 15930-7</li>
+      <li><strong>Obsługa profili ICC</strong> — ISOcoated_v2_eci i inne dostarczane w folderze <code>icc/</code></li>
+      <li><strong>Ścisły preflight</strong> — ostrzeżenia przerywają eksport</li>
+      <li><strong>Zakres arkuszy</strong> w eksporcie — <code>1-5</code>, <code>2,4,6</code>, kombinacje</li>
+      <li><strong>Tryb CLI</strong> — komenda <code>impose</code> do zadań wsadowych</li>
+    </ul>
+  </article>
+
+  <!-- v0.4 -->
+  <article class="release">
+    <div class="release-header">
+      <span class="version">0.4</span>
+      <span class="date">20 stycznia 2026</span>
+      <span class="badge beta">Beta</span>
+    </div>
+    <div class="codename">„Template Manager”</div>
+
+    <div class="section-label added">Nowe funkcje</div>
+    <ul>
+      <li><strong>Menedżer szablonów</strong> z pełną edycją parametrów</li>
+      <li><strong>Import/eksport szablonów JSON</strong> — wymiana między stanowiskami</li>
+      <li><strong>Gotowe szablony</strong> dla typowych publikacji (broszura A5, ulotka A4, wizytówki)</li>
+      <li><strong>Walidacja szablonu</strong> przed uruchomieniem impozycji</li>
+    </ul>
+  </article>
+
+  <!-- v0.3 -->
+  <article class="release">
+    <div class="release-header">
+      <span class="version">0.3</span>
+      <span class="date">8 stycznia 2026</span>
+      <span class="badge beta">Beta</span>
+    </div>
+    <div class="codename">„Binding Types”</div>
+
+    <div class="section-label added">Nowe funkcje</div>
+    <ul>
+      <li><strong>Oprawa klejona</strong> (perfect bound) z obsługą grzbietu</li>
+      <li><strong>Falcowanie</strong> — wstępna implementacja Z-fold</li>
+      <li><strong>Sygnatury</strong> — konfigurowalne 4/8/16 stron na składkę</li>
+    </ul>
+  </article>
+
+  <!-- v0.2 -->
+  <article class="release">
+    <div class="release-header">
+      <span class="version">0.2</span>
+      <span class="date">18 grudnia 2025</span>
+      <span class="badge beta">Beta</span>
+    </div>
+    <div class="codename">„Saddle Stitch MVP”</div>
+
+    <div class="section-label added">Nowe funkcje</div>
+    <ul>
+      <li><strong>Pierwsza działająca impozycja</strong> — oprawa zeszytowa z układem 2×1</li>
+      <li><strong>Eksport PDF</strong> przez PdfSharpCore</li>
+      <li><strong>Drag &amp; drop</strong> plików PDF na okno aplikacji</li>
+      <li><strong>Pasek statusu</strong> z informacją o stanie operacji</li>
+    </ul>
+  </article>
+
+  <!-- v0.1 -->
+  <article class="release">
+    <div class="release-header">
+      <span class="version">0.1</span>
+      <span class="date">1 grudnia 2025</span>
+      <span class="badge beta">Alpha</span>
+    </div>
+    <div class="codename">„Genesis” — szkielet aplikacji</div>
+
+    <div class="section-label added">Nowe funkcje</div>
+    <ul>
+      <li><strong>Podstawowa architektura</strong> — Avalonia 11 + .NET 8 + MVVM</li>
+      <li><strong>Podział na projekty</strong>: <code>Imposition.Core</code>, <code>Imposition.Pdf</code>, <code>Imposition.Export</code>, <code>Imposition.Ui</code>, <code>Imposition.Utils</code>, <code>Imposition.App</code></li>
+      <li><strong>Wczytywanie PDF-ów</strong> przez PdfPig — analiza stron, czcionek, metadanych</li>
+      <li><strong>Kontener DI</strong> oparty na Microsoft.Extensions.DependencyInjection</li>
+      <li><strong>Logowanie</strong> Serilog z plikowym i konsolowym sinkiem</li>
+    </ul>
+  </article>
+
+  <!-- Planned -->
+  <article class="release" style="border-style: dashed; opacity: 0.85;">
+    <div class="release-header">
+      <span class="version">Plany rozwoju</span>
+      <span class="date">2026+</span>
+    </div>
+    <div class="codename">Funkcje planowane w przyszłych wersjach</div>
+
+    <div class="section-label added">Na roadmapie</div>
+    <ul>
+      <li>Wsparcie <strong>PDF/X-1a</strong> i <strong>PDF/X-3</strong> obok PDF/X-4</li>
+      <li><strong>Hot folder</strong> — wbudowane monitorowanie folderu z automatyczną impozycją</li>
+      <li><strong>Integracja JDF/JMF</strong> — komunikacja z systemami MIS/ERP</li>
+      <li>Wersja <strong>macOS</strong> i <strong>Linux</strong> (Avalonia jest cross-platform)</li>
+      <li><strong>Silnik preview OpenGL</strong> dla szybszego renderu dużych arkuszy</li>
+      <li><strong>Kolejne języki UI</strong> — niemiecki i czeski (PL/EN już dostępne w 1.01)</li>
+      <li><strong>Więcej szablonów gang-run</strong> — etykiety, naklejki, karty lojalnościowe</li>
+    </ul>
+  </article>
+
+</div>
+
+<footer>
+  <p>imPRESS Studio — profesjonalne narzędzie do impozycji PDF<br>
+  © 2026 Wojciech Bujacz — <a href="mailto:wojciech.bujacz@hotmail.com">wojciech.bujacz@hotmail.com</a></p>
+  <p><a href="help.html">Pełna instrukcja</a>  |  <a href="faq.html">FAQ</a></p>
+</footer>
+
+</body>
+</html>
