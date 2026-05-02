@@ -240,6 +240,7 @@ license info</code></pre>
   <p>
     <strong>Wojciech Bujacz</strong><br />
     <a href="mailto:impress_studio@proton.me">impress_studio@proton.me</a>
+    <a href="https://impressstudio.pl">impressstudio.pl</a>
   </p>
 
 </body>
