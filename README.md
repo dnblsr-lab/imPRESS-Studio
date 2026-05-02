@@ -1,187 +1,245 @@
-🇵🇱 imPRESS Studio
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>imPRESS Studio — README</title>
+</head>
+<body>
 
-Profesjonalne narzędzie do impozycji PDF dla poligrafii i DTP
+  <h1>🇵🇱 imPRESS Studio</h1>
 
-imPRESS Studio to desktopowa aplikacja do przygotowania arkuszy drukarskich (impozycji) z plików PDF — z myślą o drukarniach, studiach DTP i osobach przygotowujących materiały do druku.
+  <p><strong>Profesjonalne narzędzie do impozycji PDF dla poligrafii i DTP</strong></p>
 
-<br>✨ Funkcje</br>
-📄 Imposition (układanie stron na arkuszu)
-📐 Obsługa różnych formatów (SRA3, A3, Letter, custom)
-✂️ Znaczniki drukarskie:
-crop marks
-registration marks
-color bars (CMYK)
-fold marks
-📚 Obsługa opraw:
-zeszytowa (saddle stitch)
-klejona (perfect bound)
-falcowanie (Z-fold, harmonijka)
-🧠 Kompensacja creep (pełzania)
-👁️ Interaktywny podgląd arkuszy:
-zoom (pod kursorem)
-pan (drag)
-obrót widoku
-rozkładówki (przód/tył)
-🎨 Podgląd kanałów CMYK (Ink Inspector)
-🎯 Próbnik koloru (RGB + CMYK)
-⚡ Progressive Zoom (natychmiastowy podgląd)
-📦 Eksport:
-PDF
-PDF/X-1a
-PDF/X-4
-🔍 Preflight (walidacja przed eksportem)
-🔁 Tryb CLI (batch processing)
-🌍 UI: polski / angielski
-🚀 Instalacja
+  <p>
+    imPRESS Studio to desktopowa aplikacja do przygotowania arkuszy drukarskich
+    z plików PDF — z myślą o drukarniach, studiach DTP i osobach przygotowujących
+    materiały do druku.
+  </p>
 
-Pobierz najnowszą wersję z zakładki Releases:
+  <h2>✨ Funkcje</h2>
 
-👉 https://github.com/dnblsr-lab/imPRESS-Studio/releases
+  <ul>
+    <li>Impozycja PDF</li>
+    <li>Obsługa formatów SRA3, A3, Letter oraz własnych rozmiarów arkusza</li>
+    <li>Znaczniki drukarskie: crop marks, pasery, paski CMYK, znaczniki falcowania</li>
+    <li>Oprawa zeszytowa, klejona oraz falcowanie</li>
+    <li>Kompensacja creep / pełzania</li>
+    <li>Interaktywny podgląd arkuszy z zoomem, panem i obrotem</li>
+    <li>Podgląd kanałów CMYK — Ink Inspector</li>
+    <li>Próbnik koloru RGB + CMYK</li>
+    <li>Progressive Zoom — natychmiastowy podgląd podczas powiększania</li>
+    <li>Eksport do PDF, PDF/X-1a oraz PDF/X-4</li>
+    <li>Preflight przed eksportem</li>
+    <li>Tryb CLI do zadań wsadowych</li>
+    <li>Interfejs PL / EN</li>
+  </ul>
 
-🔐 Licencjonowanie
+  <h2>🚀 Instalacja</h2>
 
-Aplikacja wymaga aktywacji licencji.
+  <p>
+    Najnowszą wersję można pobrać z zakładki
+    <strong>Releases</strong>:
+  </p>
 
-Dostępne:
+  <p>
+    <a href="https://github.com/dnblsr-lab/imPRESS-Studio/releases">
+      https://github.com/dnblsr-lab/imPRESS-Studio/releases
+    </a>
+  </p>
 
-wersja testowa (trial)
-licencje płatne
+  <h2>🔐 Licencjonowanie</h2>
 
-📩 Kontakt w sprawie licencji (testowej lub płatnej):
-impress_studio@proton.me
+  <p>Aplikacja wymaga aktywacji licencji.</p>
 
-➡️ Ceny ustalane indywidualnie.
+  <p>Dostępne są:</p>
 
-⚙️ Wymagania
-Windows 10 / 11 (x64)
-.NET 8 runtime (jeśli nie bundled)
-Ghostscript (dla PDF/X)
-🛠️ CLI (tryb konsolowy)
+  <ul>
+    <li>licencje testowe</li>
+    <li>licencje płatne</li>
+  </ul>
 
-Przykład:
+  <p>
+    <strong>Kontakt w sprawie licencji testowej lub płatnej:</strong><br />
+    <a href="mailto:impress_studio@proton.me">impress_studio@proton.me</a>
+  </p>
 
-impress impose input.pdf output.pdf --template saddle
+  <p><strong>Ceny ustalane indywidualnie.</strong></p>
 
-Dostępne komendy:
+  <h2>⚙️ Wymagania</h2>
 
-license keygen
+  <ul>
+    <li>Windows 10 / 11 x64</li>
+    <li>.NET 8 Runtime, jeśli nie jest dołączony do instalatora</li>
+    <li>Ghostscript — wymagany dla eksportu PDF/X</li>
+  </ul>
+
+  <h2>🛠️ CLI</h2>
+
+  <p>Przykład użycia:</p>
+
+  <pre><code>impress impose input.pdf output.pdf --template saddle</code></pre>
+
+  <p>Dostępne komendy licencyjne:</p>
+
+  <pre><code>license keygen
 license fingerprint
 license issue
 license activate
-license info
-🧠 Technologia
-C# / .NET 8
-Avalonia UI
-PDFium (Docnet)
-Ghostscript
-Skia (GPU rendering)
-MVVM
-⚠️ Uwagi
-Podgląd CMYK to symulacja, nie prawdziwe separacje
-Do finalnej produkcji zalecany jest:
-eksport PDF/X
-RIP drukarski
-📌 Roadmap
-Hot folder (automatyczna impozycja)
-Integracja JDF/JMF
-Wersje macOS / Linux
-Więcej szablonów gang-run
-Kolejne języki UI
-👤 Autor
+license info</code></pre>
 
-Wojciech Bujacz
-📩 impress_studio@proton.me
+  <h2>🧠 Technologia</h2>
 
-🇬🇧 imPRESS Studio
+  <ul>
+    <li>C# / .NET 8</li>
+    <li>Avalonia UI</li>
+    <li>PDFium / Docnet</li>
+    <li>Ghostscript</li>
+    <li>Skia</li>
+    <li>MVVM</li>
+  </ul>
 
-Professional PDF imposition tool for print production and DTP
+  <h2>⚠️ Uwagi</h2>
 
-imPRESS Studio is a desktop application designed for arranging PDF pages into print-ready sheets — built for print shops, DTP studios, and production workflows.
+  <ul>
+    <li>Podgląd CMYK jest symulacją, nie prawdziwą separacją drukarską.</li>
+    <li>Do finalnej produkcji zalecany jest eksport PDF/X oraz weryfikacja w RIP-ie.</li>
+  </ul>
 
-✨ Features
-📄 PDF imposition
-📐 Custom sheet sizes (SRA3, A3, Letter, etc.)
-✂️ Print marks:
-crop marks
-registration marks
-CMYK color bars
-fold marks
-📚 Binding types:
-saddle stitch
-perfect bound
-folding (Z-fold, accordion)
-🧠 Creep compensation
-👁️ Interactive preview:
-zoom (cursor-focused)
-pan
-rotation
-front/back spreads
-🎨 CMYK channel preview (Ink Inspector)
-🎯 Color sampler (RGB + CMYK)
-⚡ Progressive Zoom (instant feedback)
-📦 Export:
-PDF
-PDF/X-1a
-PDF/X-4
-🔍 Preflight validation
-🔁 CLI (batch mode)
-🌍 UI: Polish / English
-🚀 Installation
+  <h2>📌 Roadmap</h2>
 
-Download the latest version from Releases:
+  <ul>
+    <li>Hot folder — automatyczna impozycja</li>
+    <li>Integracja JDF/JMF</li>
+    <li>Wersje macOS / Linux</li>
+    <li>Więcej szablonów gang-run</li>
+    <li>Kolejne języki interfejsu</li>
+  </ul>
 
-👉 https://github.com/dnblsr-lab/imPRESS-Studio/releases
+  <h2>👤 Autor</h2>
 
-🔐 Licensing
+  <p>
+    <strong>Wojciech Bujacz</strong><br />
+    <a href="mailto:impress_studio@proton.me">impress_studio@proton.me</a>
+  </p>
 
-The application requires license activation.
+  <hr />
 
-Available:
+  <h1>🇬🇧 imPRESS Studio</h1>
 
-trial version
-paid licenses
+  <p><strong>Professional PDF imposition tool for print production and DTP</strong></p>
 
-📩 Contact for trial or commercial license:
-impress_studio@proton.me
+  <p>
+    imPRESS Studio is a desktop application for arranging PDF pages into
+    print-ready sheets. It is designed for print shops, DTP studios and
+    production workflows.
+  </p>
 
-➡️ Pricing is determined individually.
+  <h2>✨ Features</h2>
 
-⚙️ Requirements
-Windows 10 / 11 (x64)
-.NET 8 runtime
-Ghostscript (for PDF/X export)
-🛠️ CLI
+  <ul>
+    <li>PDF imposition</li>
+    <li>Support for SRA3, A3, Letter and custom sheet sizes</li>
+    <li>Print marks: crop marks, registration marks, CMYK color bars, fold marks</li>
+    <li>Saddle stitch, perfect bound and folding workflows</li>
+    <li>Creep compensation</li>
+    <li>Interactive sheet preview with zoom, pan and rotation</li>
+    <li>CMYK channel preview — Ink Inspector</li>
+    <li>RGB + CMYK color sampler</li>
+    <li>Progressive Zoom — instant feedback while zooming</li>
+    <li>Export to PDF, PDF/X-1a and PDF/X-4</li>
+    <li>Preflight validation before export</li>
+    <li>CLI batch mode</li>
+    <li>Polish / English interface</li>
+  </ul>
 
-Example:
+  <h2>🚀 Installation</h2>
 
-impress impose input.pdf output.pdf --template saddle
+  <p>
+    Download the latest version from
+    <strong>Releases</strong>:
+  </p>
 
-Available commands:
+  <p>
+    <a href="https://github.com/dnblsr-lab/imPRESS-Studio/releases">
+      https://github.com/dnblsr-lab/imPRESS-Studio/releases
+    </a>
+  </p>
 
-license keygen
+  <h2>🔐 Licensing</h2>
+
+  <p>The application requires license activation.</p>
+
+  <p>Available:</p>
+
+  <ul>
+    <li>trial licenses</li>
+    <li>paid licenses</li>
+  </ul>
+
+  <p>
+    <strong>Contact for trial or paid license:</strong><br />
+    <a href="mailto:impress_studio@proton.me">impress_studio@proton.me</a>
+  </p>
+
+  <p><strong>Pricing is determined individually.</strong></p>
+
+  <h2>⚙️ Requirements</h2>
+
+  <ul>
+    <li>Windows 10 / 11 x64</li>
+    <li>.NET 8 Runtime, if not bundled with installer</li>
+    <li>Ghostscript — required for PDF/X export</li>
+  </ul>
+
+  <h2>🛠️ CLI</h2>
+
+  <p>Example:</p>
+
+  <pre><code>impress impose input.pdf output.pdf --template saddle</code></pre>
+
+  <p>Available license commands:</p>
+
+  <pre><code>license keygen
 license fingerprint
 license issue
 license activate
-license info
-🧠 Tech Stack
-C# / .NET 8
-Avalonia UI
-PDFium (Docnet)
-Ghostscript
-Skia (GPU)
-MVVM
-⚠️ Notes
-CMYK preview is a simulation, not true separations
-For production use:
-export PDF/X
-process via RIP
-📌 Roadmap
-Hot folder automation
-JDF/JMF integration
-macOS / Linux versions
-More gang-run templates
-More UI languages
-👤 Author
+license info</code></pre>
 
-Wojciech Bujacz
-📩 impress_studio@proton.me
+  <h2>🧠 Tech Stack</h2>
+
+  <ul>
+    <li>C# / .NET 8</li>
+    <li>Avalonia UI</li>
+    <li>PDFium / Docnet</li>
+    <li>Ghostscript</li>
+    <li>Skia</li>
+    <li>MVVM</li>
+  </ul>
+
+  <h2>⚠️ Notes</h2>
+
+  <ul>
+    <li>CMYK preview is a simulation, not true print separations.</li>
+    <li>For production use, PDF/X export and RIP verification are recommended.</li>
+  </ul>
+
+  <h2>📌 Roadmap</h2>
+
+  <ul>
+    <li>Hot folder automation</li>
+    <li>JDF/JMF integration</li>
+    <li>macOS / Linux versions</li>
+    <li>More gang-run templates</li>
+    <li>Additional UI languages</li>
+  </ul>
+
+  <h2>👤 Author</h2>
+
+  <p>
+    <strong>Wojciech Bujacz</strong><br />
+    <a href="mailto:impress_studio@proton.me">impress_studio@proton.me</a>
+  </p>
+
+</body>
+</html>
