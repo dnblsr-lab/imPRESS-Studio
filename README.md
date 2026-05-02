@@ -4,7 +4,7 @@ Profesjonalne narzędzie do impozycji PDF dla poligrafii i DTP
 
 imPRESS Studio to desktopowa aplikacja do przygotowania arkuszy drukarskich (impozycji) z plików PDF — z myślą o drukarniach, studiach DTP i osobach przygotowujących materiały do druku.
 
-✨ Funkcje
+<br>✨ Funkcje</br>
 📄 Imposition (układanie stron na arkuszu)
 📐 Obsługa różnych formatów (SRA3, A3, Letter, custom)
 ✂️ Znaczniki drukarskie:
