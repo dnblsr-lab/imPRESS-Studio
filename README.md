@@ -119,7 +119,7 @@ license info</code></pre>
   <h2>👤 Autor</h2>
 
 <p>
-  <strong>Wojciech Bujacz</strong><br />
+  <strong>WB</strong><br />
   <a href="mailto:impress_studio@proton.me">impress_studio@proton.me</a><br />
   <a href="https://impressstudio.pl">impressstudio.pl</a>
 </p>
@@ -238,7 +238,7 @@ license info</code></pre>
   <h2>👤 Author</h2>
 
 <p>
-  <strong>Wojciech Bujacz</strong><br />
+  <strong>WB</strong><br />
   <a href="mailto:impress_studio@proton.me">impress_studio@proton.me</a><br />
   <a href="https://impressstudio.pl">impressstudio.pl</a>
 </p>
