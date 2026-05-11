@@ -28,6 +28,7 @@
     <li>Interaktywny podgląd arkuszy z zoomem, panem i obrotem</li>
     <li>Podgląd kanałów CMYK — Ink Inspector</li>
     <li>Próbnik koloru RGB + CMYK</li>
+    <li>Hot Folders</li>
     <li>Progressive Zoom — natychmiastowy podgląd podczas powiększania</li>
     <li>Eksport do PDF, PDF/X-1a oraz PDF/X-4</li>
     <li>Preflight przed eksportem</li>
@@ -109,7 +110,6 @@ license info</code></pre>
   <h2>📌 Roadmap</h2>
 
   <ul>
-    <li>Hot folder — automatyczna impozycja</li>
     <li>Integracja JDF/JMF</li>
     <li>Wersje macOS / Linux</li>
     <li>Więcej szablonów gang-run</li>
@@ -144,6 +144,7 @@ license info</code></pre>
     <li>Print marks: crop marks, registration marks, CMYK color bars, fold marks</li>
     <li>Saddle stitch, perfect bound and folding workflows</li>
     <li>Creep compensation</li>
+    <li>Hot Folders</li>
     <li>Interactive sheet preview with zoom, pan and rotation</li>
     <li>CMYK channel preview — Ink Inspector</li>
     <li>RGB + CMYK color sampler</li>
@@ -228,7 +229,6 @@ license info</code></pre>
   <h2>📌 Roadmap</h2>
 
   <ul>
-    <li>Hot folder automation</li>
     <li>JDF/JMF integration</li>
     <li>macOS / Linux versions</li>
     <li>More gang-run templates</li>
