@@ -179,12 +179,522 @@
     <p>Tu znajdziesz pełną historię wszystkich wydań imPRESS Studio z opisem nowych funkcji, ulepszeń i poprawek. Format zgodny z <a href="https://keepachangelog.com/pl/1.1.0/">Keep a Changelog</a>, wersjonowanie <a href="https://semver.org/lang/pl/">Semantic Versioning</a>.</p>
   </div>
 
-  <!-- v1.01 -->
+  <!-- v1.2.3 -->
   <article class="release latest">
+    <div class="release-header">
+      <span class="version">1.2.3</span>
+      <span class="date">17 maja 2026</span>
+      <span class="badge latest">Najnowsza</span>
+      <span class="badge stable">Stabilna</span>
+    </div>
+    <div class="codename">Smart preflight, template suggestions, layout optimizer + naprawy podglądu i imposycji</div>
+
+    <div class="section-label added">Preflight v2 — content-based bleed + narrative summary</div>
+    <ul>
+      <li><strong>Content-based bleed detection</strong> — nowy <code>PdfContentExtentWalker</code> skanuje per-stronę bounding box wszystkich obrazów + glyphów tekstu (PdfPig), porównuje z TrimBox/BleedBox. Dwa nowe issue codes: <code>BLEED_CONTENT_UNUSED</code> ("deklarowany spad bez treści w obszarze bleed — białe paski po cięciu") i <code>BLEED_CONTENT_OVERFLOWS_BLEEDBOX</code> ("content wychodzi poza BleedBox — RIP utnie")</li>
+      <li><strong>Smart preflight summary panel</strong> — nad listą issues w FileInfoDialog pojawia się kolorowy banner (4 mood themes: Passing / InfoOnly / WarningsOnly / Critical) z jednolinjowym headline'em i top-5 priorytetowymi akcjami imperatywnymi ("Spad zerowy na 4 stronach — w źródle ustaw bleed ≥ 3 mm"). Pure-function <code>PreflightSummaryGenerator</code> + 22 nowe klucze <code>HF.PV.Action.*</code> w PL/EN</li>
+    </ul>
+
+    <div class="section-label added">Template suggestions z wymiarów PDF</div>
+    <ul>
+      <li><strong>Tools → "Sugeruj szablon z PDF…"</strong> — <code>TemplateSuggestionEngine</code> z biblioteką 25 presetów (wizytówki, pocztówki, ulotki, plakaty, naklejki rolka z OPOS, hangtagi, CD/DVD, bilety). Euclidean dimensional matching z auto-rotacją, threshold 25mm. Dialog z selectable cards (confidence %, sheet + N-up summary), klik "Zastosuj" pcha gotowy <code>Template</code> do MainWindowViewModel</li>
+      <li><strong>Auto-rejestracja "Roll 320" paper preset</strong> — 320×1000mm dla naklejek/etykiet rolkowych. <code>EnsureAuxiliaryPaperPresets</code> idempotentne, woła się raz w composition root</li>
+    </ul>
+
+    <div class="section-label added">Layout optimizer (auto N-up)</div>
+    <ul>
+      <li><strong>Przycisk "Optymalizuj N-up"</strong> w karcie Layout edytora szablonów. <code>LayoutOptimizer.Optimize</code> próbuje obu orientacji item (0° i 90°), liczy max sloty przy aktualnych margin/gutter/bleed, tie-break na wyższą sheet utilization. Bez rotacji gdy remis (nie flipuje gratuicznie orientacji)</li>
+      <li><strong>Status banner po kliku</strong>: "Optymalny układ: 6 → 21 sztuk na arkuszu (3×7)" lub "Aktualny układ (12 sztuk) jest już optymalny". Hint o rotacji item jeśli optymalna orientacja wymaga obrotu — nie flipuje Trim w tle, żeby nie zaskoczyć operatora</li>
+    </ul>
+
+    <div class="section-label added">Podgląd — Trim/Bleed guides + manual update check</div>
+    <ul>
+      <li><strong>Checkbox "Trim/Bleed"</strong> w toolbarze podglądu — per-placement cyjan przerywany = TrimBox (linia cięcia), magenta kropkowany = BleedBox (do gdzie ma sięgać treść). Wizualne potwierdzenie content-bleed preflight checks. Domyślnie off (opt-in dla weryfikacji)</li>
+      <li><strong>Help → "Sprawdź aktualizacje…"</strong> — manual entry point obok cichego startup checka. Nowa <code>UpdateService.ManualCheckAsync</code> zwraca tri-state result (<code>UpdateAvailable</code> / <code>AlreadyLatest</code> / <code>Failed</code>) — user zawsze dostaje explicit feedback dialog "Masz najnowszą wersję (1.2.3)" zamiast cichego nulla</li>
+    </ul>
+
+    <div class="section-label fixed">Imposition — duplex pairing dla ganging</div>
+    <ul>
+      <li><strong>GangingStrategy</strong>: 2-stronicowy PDF + 12-up + duplex → <strong>1 arkusz</strong> z 12 frontami na stronie A i 12 tyłami na stronie B (było: 2 osobne arkusze jednostronne). 4-stronicowy PDF → 2 arkusze pairowane (1+2), (3+4). Nieparzysta liczba stron: ostatni arkusz ma front + pusty back. <code>Duplex=false</code> zachowuje starą semantykę (jeden arkusz per strona). Grid offsets pre-computed raz — front i back dzielą identyczną siatkę</li>
+    </ul>
+
+    <div class="section-label fixed">Podgląd — naprawy UX</div>
+    <ul>
+      <li><strong>Licznik arkuszy 1-based</strong> — pokazuje "Arkusz 1/2" zamiast wprowadzającego w błąd "0/2". Nowy <code>CurrentSheetNumber => CurrentSheetIndex + 1</code> w PreviewViewModel</li>
+      <li><strong>Toggle przód/tył działa w spread view</strong> — wcześniej w trybie rozkładówki klik na "Tył" nie zmieniał nic wizualnie (oba boki widać równocześnie). Teraz auto-wyłącza spread i pokazuje stronę przeciwną</li>
+      <li><strong>Biały arkusz po odznaczeniu rozkładówki</strong> — gdy <code>ShowBackSide=true</code> a <code>BackPlacements</code> puste (single-sided ganging), VM auto-wraca do front. Bez tego user wpadał na biały placeholder</li>
+      <li><strong>CMYK bars na środku górnej krawędzi arkusza</strong> — pojedynczy pasek wewnątrz papieru (było: per-placement powyżej arkusza, klipowane na małych sheetach). 40% szerokości arkusza, cap 160px, ~6px wysokości. Niezależny toggle "Paski CMYK" w toolbarze</li>
+      <li><strong>Overview placeholder threshold 0.5 → 0.25</strong> — wcześniej jeden tick scrolla z 50% zoomu (0.5÷1.25 = 0.4) niespodziewanie wpadał w tryb "str. 1" placeholder. Teraz overview kicks in dopiero przy genuinie miniaturowym arkuszu</li>
+    </ul>
+
+    <p style="margin-top: 16px; color: var(--text-muted); font-size: 13px;">Build: 0 warnings / 0 errors. Testy: 109/109 zielone (było 66 przed sesją, +43 nowe — content-bleed, summary generator, suggestion engine, layout optimizer, ganging duplex).</p>
+  </article>
+
+  <!-- v1.2.2 -->
+  <article class="release">
+    <div class="release-header">
+      <span class="version">1.2.2</span>
+      <span class="date">16 maja 2026</span>
+      <span class="badge stable">Stabilna</span>
+    </div>
+    <div class="codename">Preview pipeline v3 — koniec eksplozji RAM na rolkach A0/A1, render proporcjonalny do ekranu (Fiery-style)</div>
+
+    <div class="section-label fixed">Eksplozja pamięci 3,5 GB → ~70 MB przy rolkach 1000+ slotów</div>
+    <ul>
+      <li><strong>Memory-budget LRU zastępuje count-based</strong> — <code>PdfPreviewRenderer</code> trzyma się teraz twardego budżetu 512 MB (settable przez <code>MaxMemoryBytes</code>) zamiast liczby wpisów (poprzednio 80). Pojedyncze duże bitmapy A0/A1 nie mogą już rozdąć cache do wielu GB. Eviction: snapshot + sort po <code>LastAccessTick</code> + drop do limitu</li>
+      <li><strong>Scale-clamping per bitmap (max 64 MB)</strong> — przed alokacją sprawdzamy naturalne wymiary strony (cheap probe Docnet, bez rasteryzacji) i rozwiązujemy <em>s = √(cap / (w·h·4))</em> żeby cap'nąć efektywną skalę. A0 portrait nigdy nie zaalokuje 1.16 GB jak przy zoom 6×</li>
+      <li><strong>Display-pixel-aware rendering — root cause fix</strong> dla 3.5 GB. Nowy overload <code>RequestPageAsync(pdf, page, zoom, displayPixelWidth)</code> liczy scale z rzeczywistego rozmiaru placementu na ekranie, nie z <code>vm.Zoom</code>. Dla 50mm naklejki przy 1600% zoom na 8.7m rolce: zamiast 1446×936 px bitmap (~5 MB) renderujemy 121×78 px (~38 KB) — <em>~130× redukcja</em> przy zerowej utracie wizualnej. <code>SharpnessMargin</code> 2× zapewnia ostrość przy lekkim zoom in</li>
+      <li><strong>Niskie buckety w <code>ScaleBuckets</code></strong> — dodane 0.5 / 0.75 / 1.0 obok istniejących 1.5 / 2.0 / 3.0 / 4.5 / 6.0. Display-aware caller dostaje skale proporcjonalne do faktycznego demand'u</li>
+      <li><strong>Cancellation tokens per cache key</strong> — <code>_pendingCts</code> zastępuje proste <code>_pending</code>. Nowy zoom na tej samej stronie cancel-uje wcześniejsze CTS prefix-sweep'em; render-task po <code>WaitAsync(token)</code> bail-outuje bez dotykania Docnet jeśli scale stała się stale. Eliminuje "render noise" przy szybkim zoomowaniu</li>
+    </ul>
+
+    <div class="section-label added">Vector overview mode (Fiery Impose-style)</div>
+    <ul>
+      <li><strong>Przy <code>vm.Zoom &lt; 0.5</code></strong> canvas pomija <code>TryGetPageBitmap</code> i rysuje vector placeholder z numerem strony zamiast rasteryzowanego PDF. Mirror tego co robi Fiery Impose / Acrobat na overview zoom — przy fit-to-window użytkownik sprawdza layout, nie content, więc rasteryzacja to czysty koszt bez informacji</li>
+      <li><strong>Zero background renderów</strong> w overview tier — żaden Docnet open, żaden cache slot. Ogromna oszczędność CPU/RAM przy przelatywaniu przez wielostronicowe joby</li>
+      <li>Eyedropper wyłączony w overview (nie ma bitmapy do sample), tooltip hit-area zachowany. Centered numer strony zastępuje corner label przy małych rozmiarach</li>
+    </ul>
+
+    <div class="section-label changed">Roll-aware sheet layout — koniec 22px słupków</div>
+    <ul>
+      <li><strong>Aspect ratio &gt; 4:1 → fit po krótszym wymiarze</strong>. Rolka 320×8692mm pod fit-both dawała scale 0.069 → sheet rysował się jako 22px wąski słupek w 600px oknie. Teraz scale 2.06 → sheet wypełnia szerokość okna (~660px), długość przelewa się pionowo, user pan-uje/scroll-uje. Działa też dla horizontal rolek/banerów (fit po wysokości + align-left)</li>
+      <li><strong>Align-to-start zamiast center na długiej osi</strong> — pionowa rolka startuje u góry, pozioma od lewej. User widzi początek rolki, nie tiny chunk po środku</li>
+      <li><strong>Standardowe formaty (A4, A3, B1, kwadrat) niezmienione</strong> — fit-both + center jak dotąd. Threshold 4:1 jest gap'em między A-series (1.41:1) a rolkami (typowo 10:1+)</li>
+      <li>Helper <code>ComputeSheetLayout</code> zastępuje 3 zduplikowane bloki fit-scale + center calc w canvas</li>
+    </ul>
+
+    <div class="section-label fixed">RollFed wymusza single-sheet (spread nie ma sensu dla rolki)</div>
+    <ul>
+      <li><strong>"Rozkładówka" ignorowana dla RollFed binding</strong> — spread view (front+back obok siebie) to booklet concept. Dla ciągłej rolki dawałby już-wąski strip skompresowany jeszcze bardziej. Canvas wymusza <code>DrawSingleSheet</code> niezależnie od <code>vm.ShowSpread</code></li>
+      <li><strong>Scene cache działa dla RollFed</strong> nawet gdy spread toggle on — <code>effectiveSpread</code> trafia do <code>SceneSnapshot</code> i <code>cacheEligible</code> check, więc no-op toggle nie inwaliduje cache</li>
+    </ul>
+
+    <div class="section-label changed">Architektura — refactor i porządki</div>
+    <ul>
+      <li><code>GetOrProbePageBox</code> — zunifikowany Docnet probe natywnych wymiarów strony z cache w <code>_pageDimensions</code>. Używany przez <code>ClampScaleForMemory</code> i <code>ComputeDisplayScale</code> (DRY)</li>
+      <li><code>StoreInCache</code> serializowany przez <code>_cacheLock</code> — eliminuje race przy concurrent inserts (TryHitCache reads zostają lock-free). Throughput nie cierpi bo inserts są throttlowane przez <code>MaxConcurrentRenders</code> (2-4)</li>
+      <li><code>PreviewViewModel.TryGetPageBitmap</code> ma nowy opcjonalny param <code>displayPixelWidth = 0</code> — back-compat z istniejącymi callerami, nowa display-aware ścieżka aktywuje się przy &gt; 0</li>
+      <li>Build: 0 warnings / 0 errors, testy 66/66 zielone</li>
+    </ul>
+  </article>
+
+  <!-- v1.2.1 -->
+  <article class="release">
+    <div class="release-header">
+      <span class="version">1.2.1</span>
+      <span class="date">16 maja 2026</span>
+      <span class="badge stable">Stabilna</span>
+    </div>
+    <div class="codename">Edytor szablonów — UX po pierwszych testach 1.2: walidacja, persistence, polskie komunikaty</div>
+
+    <div class="section-label fixed">Edytor szablonów — koniec utraty stanu i niejasnych błędów</div>
+    <ul>
+      <li><strong>Stan edytora przeżywa zamknięcie dialogu</strong> — <code>TemplateEditorViewModel</code> przeniesiony z <em>Transient</em> do <em>Singleton</em> w DI. Wpisane wartości pozostają między kolejnymi otwarciami menedżera szablonów w tej samej sesji aplikacji. Wcześniej każde otwarcie dawało świeży VM z domyślnymi wartościami — wszystko co wpisałeś przepadało jeśli dialog się zamknął</li>
+      <li><strong>Walidacja blokuje zamknięcie dialogu z niepoprawnym szablonem</strong> — kliknięcie <em>Użyj szablonu</em> najpierw waliduje. Gdy są błędy, dialog NIE zamyka się, banner z listą błędów pojawia się u góry edytora, użytkownik widzi co poprawić bez utraty żadnych wartości. Wcześniej dialog zamykał się cicho, a błąd wybuchał dopiero w MainWindow podczas planowania</li>
+      <li><strong>Czerwony banner z błędami</strong> nad nagłówkiem szablonu, każdy błąd na osobnej linii. Banner znika automatycznie po naprawieniu wszystkich błędów (kliknięcie OK rewaliduje), również po wczytaniu nowego szablonu z dysku lub presetu</li>
+      <li><strong>Komunikaty walidacji po polsku</strong> — wszystkie błędy w <code>Template.Validate()</code> i <code>RollFedStrategy</code> przetłumaczone. Zamiast <em>"Sheet dimensions must be positive"</em> jest <em>"Wymiary arkusza muszą być dodatnie"</em>; <em>"Roll usable width X cannot fit item Y"</em> → <em>"Użyteczna szerokość rolki Xmm nie mieści itemu Ymm"</em>; itd.</li>
+      <li><strong>Auto-generowanie ID szablonu</strong> — gdy pole ID jest puste, <code>Validate()</code> generuje GUID-based zamiast rzucać <em>"Template Id is required"</em>. Pole dalej edytowalne — można nadpisać czytelną nazwą</li>
+      <li><strong>Edytor startuje z poprawnymi defaultami</strong> — VM inicjalizuje się <code>MakeBlankTemplate()</code> (SRA3 landscape, A4 trim) zamiast pustym <code>new Template()</code>. Koniec kaskady błędów <em>"Sheet/Trim must be positive"</em> przy pierwszym otwarciu</li>
+      <li><strong>Mniej duplikatów w komunikatach</strong> — chained checki (<em>"roll usable width -10mm cannot fit item 0mm"</em>) pomijane gdy bazowe wartości są zerowe. Wcześniej dostawałeś 3 echa tego samego problemu</li>
+    </ul>
+
+    <div class="section-label added">Roll length — przełącznik split / continuous (jak Caldera, Onyx)</div>
+    <ul>
+      <li><strong>Checkbox "Podziel na segmenty"</strong> + osobne pole długości segmentu zastąpiło anty-wzorzec <em>"0 = bez limitu"</em>. UI dychotomia matches branżowy standard — Caldera ma "Continuous" toggle, Onyx ma panel-length mode w device profile, Flexi/Ergosoft to samo. Toggle off = jeden ciągły output PDF; toggle on = aktywny numeryk z domyślnym 1000mm</li>
+      <li><strong>Per-section enable toggles</strong> w sekcji <em>Rolka</em> i <em>Nakładka / Logo</em> — checkbox <em>Włącz</em> przy nagłówku, inputy są wyszarzone gdy wyłączone. Walidacja respektuje flagę: standardowy sheet-fit check pomijany gdy roll active, overlay walidowany tylko gdy enabled. Koniec konfliktów typu "RollFed binding wyklucza saddle stitch validation"</li>
+      <li><strong>Nowy preset:</strong> <em>"Naklejki 50×50 — rolka 320mm"</em> — RollFed binding, 1000 sztuk, 6 sztuk/rząd × 167 rzędów, gap 2mm, Summa OPOS markers (3mm, offset 5mm). Klikasz preset → masz gotowy szablon pod produkcję naklejek na rolce</li>
+    </ul>
+
+    <div class="section-label changed">UI — drobne poprawki</div>
+    <ul>
+      <li>Auto-fill szerokości i wysokości arkusza po wybraniu presetu (SRA3 → 450×320 itd.) — wcześniej trzeba było ręcznie wpisać. Pod spodem: zamiana referencji <code>Template.Sheet</code> na nową instancję <code>SheetSize</code> żeby Avalonia odświeżyła nested bindings (mutacja in-place nie wystarczała, bo POCO nie ma <code>INotifyPropertyChanged</code>)</li>
+      <li>Sekcja "Rozmiar arkusza" uproszczona — usunięto zduplikowany rząd ręcznej edycji W/H/Nazwa. Zostały: dropdown presetu + landscape, plus jedna linia <em>Dodaj własny rozmiar</em> z polami szerokości i wysokości (z opisami i normalną wielkością)</li>
+      <li>Strony www (PL + EN) — index, help/pomoc, faq, privacy: wpis o <em>roll-fed + Summa OPOS + overlay loga</em> w hero/features, nowe pytanie FAQ <em>"Czy obsługuje produkcję naklejek na rolce z plotterem Summa?"</em>, footer wersja 1.2.1</li>
+    </ul>
+
+    <div class="section-label fixed">Architektura</div>
+    <ul>
+      <li><code>RollOptions.Enabled</code> i <code>OverlayOptions.Enabled</code> (default false) — bool flagi gate'ujące walidację per-sekcja niezależnie od <code>Binding</code>. JSON backward-compatible — stare szablony bez tych pól wczytują się z defaultami false</li>
+      <li><code>TemplateEditorViewModel.TryValidate()</code> — niewybuchająca walidacja zwracająca <em>true/false</em>, populująca <code>ValidationErrors</code> kolekcję bindowaną do bannera</li>
+      <li><code>TemplateEditorViewModel.RollSplitIntoSegments</code> — derived property mapująca checkbox split/continuous na <code>MaxRollLengthMm</code> (0 vs &gt;0). Bez nowego pola w modelu — UI affordance nad istniejącym semantykiem</li>
+      <li>Nowy test: <code>Validation_AutoGeneratesIdWhenMissing</code> — pilnuje że pusty Id nie throw'uje. Pokrycie: 66/66 zielone</li>
+    </ul>
+  </article>
+
+  <!-- v1.2.0 -->
+  <article class="release">
+    <div class="release-header">
+      <span class="version">1.2.0</span>
+      <span class="date">15 maja 2026</span>
+      <span class="badge stable">Stabilna</span>
+    </div>
+    <div class="codename">Roll-fed / print&cut — produkcja naklejek na rolce z markerami Summa OPOS</div>
+
+    <div class="section-label added">Nowa oprawa: RollFed (step-and-repeat na wstędze)</div>
+    <ul>
+      <li><strong>Nowy typ oprawy <code>BindingType.RollFed</code></strong> — produkcja naklejek, etykiet i innych aplikacji rolkowych na ploterach lateksowych / solwentowych. Zamiast pojedynczego arkusza generuje segment wstęgi o szerokości rolki (<code>Sheet.WidthMm</code>) i wysokości obliczanej dynamicznie z liczby powtórzeń, gapów i wymiarów itemu</li>
+      <li><strong>Variable repeat</strong> — pole <code>RollOptions.RepeatCount</code> mówi ile sztuk wyprodukować. Silnik automatycznie liczy ile mieści się w rzędzie (<code>floor((width + gap) / (item + gap))</code>), ile rzędów potrzeba i wypełnia ostatni rząd częściowo jeśli liczba nie dzieli się równo</li>
+      <li><strong>Multi-segment split</strong> — gdy <code>MaxRollLengthMm > 0</code> (np. ploter ma limit ramki / operator chce krótsze segmenty), wynik dzieli się na N osobnych <code>SheetLayout</code>-ów. Każdy segment ma sztywną wysokość = <code>MaxRollLengthMm</code>. Bez limitu = jeden segment z tight-fit do faktycznej zawartości</li>
+      <li><strong>Basic nesting (auto-rotation)</strong> — checkbox <em>Pozwól obrócić</em> w UI każe silnikowi porównać upakowanie 0° vs 90° i wybrać orientację która zmieści więcej itemów w rzędzie. Nie zaawansowany irregular nesting (to backlog), ale dla prostokątnych naklejek bardzo skuteczne</li>
+      <li><strong>Single-sided (front-only)</strong> — rolki nie duplexuje się; <code>BackPlacements</code> zawsze pusty</li>
+    </ul>
+
+    <div class="section-label added">Markery plotera Summa OPOS / OPOS-XY</div>
+    <ul>
+      <li><strong>Nowy enum <code>CutterMarkType</code></strong> w <code>MarksOptions</code>: <code>None</code>, <code>SummaOPOS</code>, <code>SummaOPOSXY</code>. Cztery solid-black kwadraty (default 3mm) w narożnikach bounding-box-u wszystkich non-blank placementów, offset domyślnie 5mm od cut line — Summa wymaga min. 5–8mm clearance dla sensora optycznego</li>
+      <li><strong>Wariant OPOS-XY</strong> dorzuca mały label tekstowy <em>"Sheet N"</em> obok markera origin (BottomLeft) — sensor go ignoruje, operator widzi numer segmentu wzrokiem przy ładowaniu rolki na ploter</li>
+      <li><strong>Pure geometry helper <code>CutterMarkLayout</code></strong> w <code>Imposition.Core/Marks/</code> — bez zależności od PdfSharp, w pełni testowalny w izolacji (10 testów jednostkowych pokrywających bbox, ignorowanie blank slotów, wybór offsetu, OPOS-XY)</li>
+      <li><strong>Renderer <code>CutterMarksRenderer</code></strong> wpięty w <code>PdfComposer</code> obok <code>PrinterMarksRenderer</code>. Markery rysowane raz na arkusz/segment (nie per-item) — to zgodne z workflow Summa, gdzie ploter kalibruje się do całej grupy</li>
+    </ul>
+
+    <div class="section-label added">Overlay loga / nakładka per arkusz</div>
+    <ul>
+      <li><strong>Nowy <code>OverlayOptions</code></strong> — stempluje plik PNG/JPG/PDF na każdym arkuszu wynikowym. 9 anchor pozycji (TopLeft … BottomRight), offset X/Y, max szerokość (aspect ratio zachowany), tryb <em>Once per sheet</em> (raz na arkusz) lub <em>Once per item</em> (raz na każdy placement)</li>
+      <li><strong>Wsparcie raster + vector</strong> — PNG/JPG przez <code>XImage</code>, single-page PDF przez <code>XPdfForm</code>. Detekcja po rozszerzeniu pliku</li>
+      <li><strong>Pure geometry helper <code>LogoOverlayLayout</code></strong> — 12 testów jednostkowych dla wszystkich anchor permutacji, aspect preservation, blank ignoring, edge cases</li>
+      <li><strong>Renderer <code>LogoOverlayRenderer</code></strong> wpięty w <code>PdfComposer</code>. Brak loga = no-op (puste pole). Brak pliku na dysku = warning w logu, eksport jedzie dalej (defensywnie, żeby nie psuć batch jobów przy nieistniejącej ścieżce)</li>
+    </ul>
+
+    <div class="section-label added">Edytor szablonów — nowe panele</div>
+    <ul>
+      <li><strong>Sekcja "Rolka (RollFed)"</strong> — pola: liczba powtórzeń, odstęp X/Y, maks. długość segmentu, allow rotation</li>
+      <li><strong>Sekcja "Markery plotera (print&cut)"</strong> — combo typu markera, rozmiar, odsunięcie</li>
+      <li><strong>Sekcja "Nakładka / Logo"</strong> — file picker (PNG/JPG/PDF), combo anchor, max szerokość, offset X/Y, toggle <em>raz na arkusz</em></li>
+      <li>Combo box <em>Typ oprawy</em> automatycznie pokazuje nową pozycję <code>RollFed</code>. Wszystkie nowe panele lokalizowane PL/EN. Pre-existing UI bez zmian</li>
+    </ul>
+
+    <div class="section-label changed">API i architektura</div>
+    <ul>
+      <li><code>Template</code> rozszerzony o trzy nowe property: <code>Roll</code>, <code>Overlay</code> (oraz pola w <code>Marks</code>: <code>CutterMarks</code>, <code>CutterMarkSizeMm</code>, <code>CutterMarkOffsetMm</code>). JSON serializacja kompatybilna wstecznie — stare szablony bez tych pól wczytują się z defaultami</li>
+      <li><code>Template.Validate()</code> dla <code>RollFed</code> pomija standardowy check <em>required sheet W×H ≥ N-up math</em> (długość arkusza liczona dynamicznie). Zamiast tego sprawdza, czy item w ogóle mieści się szerokością rolki</li>
+      <li><code>PdfComposer</code> przyjmuje teraz dodatkowo <code>CutterMarksRenderer</code> i <code>LogoOverlayRenderer</code> w konstruktorze (DI). Wywoływane razem z istniejącym <code>PrinterMarksRenderer</code> w <code>RenderSheetSide</code>. Zarejestrowane jako singletons w <code>CompositionRoot</code></li>
+      <li>Pokrycie testami: 65/65 zielone (29 istniejących + 14 RollFed + 10 CutterMarkLayout + 12 LogoOverlayLayout)</li>
+    </ul>
+  </article>
+
+  <!-- v1.1.1 -->
+  <article class="release">
+    <div class="release-header">
+      <span class="version">1.1.1</span>
+      <span class="date">10 maja 2026</span>
+      <span class="badge stable">Stabilna</span>
+    </div>
+    <div class="codename">„Run as User” — koniec zapisu do Program Files, hardening UX hot folderów</div>
+
+    <div class="section-label fixed">Krytyczne: aplikacja nie pisze już do Program Files</div>
+    <ul>
+      <li><strong>Wszystkie dane dynamiczne przeniesione do <code>%APPDATA%</code> / <code>%LOCALAPPDATA%</code></strong> — wcześniej licencje, szablony i niektóre cache zapisywały się do <code>C:\Program Files\imPRESS Studio\</code>, co dawało <code>UnauthorizedAccessException</code> u użytkowników bez admina, kolizje z UAC przy aktywacji licencji oraz utratę danych przy aktualizacji aplikacji. Aplikacja działa teraz poprawnie pod zwykłym kontem Windows bez podnoszonych uprawnień</li>
+      <li><strong>Nowy centralny helper <code>AppPaths</code></strong> — single source of truth dla wszystkich ścieżek. Roaming (<code>%APPDATA%\imPRESS Studio\</code>): <code>settings.json</code>, <code>hotfolders.json</code>, <code>templates/</code>, <code>presets/</code>, <code>licenses/</code>, <code>icc/</code> (user-imported), <code>export-presets/</code>, <code>localization/</code>. Local-only (<code>%LOCALAPPDATA%\imPRESS Studio\</code>): <code>logs/</code>, <code>state/hotfolder.db</code>, <code>cache/</code>, <code>temp/</code>, <code>recovery/</code>, <code>runtime/spool/</code>, <code>license.stamp</code>. Bundled assety (read-only ICC, default template) zostają w <code>{install}/icc/</code> i <code>{install}/config/</code> i nigdy nie są zapisywane podczas runtime'u</li>
+      <li><strong>Migracja 1.0.x → 1.1.1 (idempotentna, jednorazowa)</strong> — przy pierwszym starcie kopiuje stary <code>Program Files\imPRESS Studio\config\license.json</code> do <code>%APPDATA%\imPRESS Studio\licenses\license.json</code>, kopiuje stare szablony do <code>%APPDATA%\imPRESS Studio\templates\</code>, przenosi poprzednie <code>%LocalAppData%\ImpositionApp\*</code> (logi, state, cache) do <code>%LocalAppData%\imPRESS Studio\*</code>. Operator nie musi ręcznie nic przenosić — wszystko działa po update'cie</li>
+      <li><strong>Ujednolicone nazwy katalogów</strong> — usunięto inconsistency <code>ImpositionApp</code> vs <code>imPRESS Studio</code> w kilku miejscach (logi, ledger, dialog "Otwórz logi"). Wszędzie teraz używana jest jedna nazwa: <code>imPRESS Studio</code></li>
+      <li><strong>User-imported ICC profiles</strong> trafiają teraz do <code>%APPDATA%\imPRESS Studio\icc\</code>. Bundled profile dostarczone z instalatorem dalej w <code>{install}/icc/</code> (read-only), oba katalogi merge'owane w combobox eksportu z user-priority na konflikty nazw</li>
+    </ul>
+
+    <div class="section-label added">Hot folder UX po realnych testach produkcyjnych</div>
+    <ul>
+      <li><strong>Auto-default <code>.work</code>/<code>.archive</code>/<code>.error</code></strong> — pola Folder roboczy / archiwum / błędów w dialogu edycji nie są już wymagane. Gdy puste, runner sam tworzy <code>.work</code>, <code>.archive</code>, <code>.error</code> jako podkatalogi folderu wejściowego (z dropką, więc filewatcher i tak ich nie matchuje). Dialog pokazuje wyliczoną wartość pod każdym blank polem: <em>"Domyślnie zostanie utworzony: D:\HF\input\.work"</em> — operator widzi co się stanie, zanim kliknie Zapisz</li>
+      <li><strong>Realtime walidacja per-pole</strong> w dialogu Dodaj/Edytuj — czerwone gwiazdki <code>*</code> przy wymaganych polach (Nazwa, Wejście, Wyjście, Szablon), pod każdym polem mała czerwona etykieta z konkretnym błędem. Walidacja na każdy keystroke; przycisk <em>Zapisz</em> jest disabled dopóki <code>IsValid = false</code>. Koniec ze zbiorczym banner-em po kliknięciu Zapisz — wiesz od razu które pole jest złe</li>
+      <li><strong>Banner statusu licencji w managerze</strong> — gdy licencja jest nieprawidłowa lub wygasła, czerwony banner ⚠ na górze okna z treścią błędu i przyciskiem <em>Otwórz menedżer licencji</em>, który otwiera dialog aktywacji bez wychodzenia z managera. Po pomyślnej aktywacji banner znika i Start staje się dostępny. Wcześniej operator widział tylko warning w logu i nie wiedział czemu Start nic nie robi</li>
+      <li><strong>Banner odzyskania zadań po crashu</strong> — po starcie aplikacji, jeżeli runner odzyskał osierocone zadania z poprzedniej sesji (proces padł w trakcie eksportu), pojawia się niebieski banner: <em>"Odzyskano N przerwane zadanie/zadania hot folderów po poprzednim zamknięciu aplikacji."</em></li>
+      <li><strong>Start/Restart disabled przy nieprawidłowej licencji</strong> — komendy mają <code>CanExecute = HasSelection &amp;&amp; LicenseValid</code>, więc przyciski są wyszarzone. Wcześniej kliknięcie Start przy złej licencji zapisywało wyjątek tylko do loga, bez czytelnego sygnału w UI</li>
+    </ul>
+
+    <div class="section-label fixed">Hardening backendu — fail fast zamiast cichych crashy</div>
+    <ul>
+      <li><strong>Hard guard clauses na każdym I/O boundary</strong> — <code>HotFolderRunner.EnsureFolders</code>, <code>FileTransitions.MoveToWork/ApplyOnSuccess/ApplyOnFailure/ReturnToInput</code>, <code>HotFolderJobProcessor.LoadTemplateAsync</code>, oba watcher sources (<code>FileSystemWatcher</code> + polling) walidują teraz: <code>ArgumentException.ThrowIfNullOrWhiteSpace</code>, <code>Path.IsPathFullyQualified</code>, brak invalid characters. Jeden z testów zlapal <code>Directory.CreateDirectory("")</code> mimo walidacji UI — backend nie ufa już upstream'owi i sam fail-fastuje z czytelnym komunikatem</li>
+      <li><strong>Walidator hot folderów rozluźniony dla dotted defaults</strong> — wcześniejsza zasada <em>"work/archive/error nie mogą leżeć wewnątrz input"</em> jest dalej egzekwowana, ale teraz akceptuje single-level subdir o nazwie <code>.work</code>, <code>.archive</code>, <code>.error</code> jako runner-managed exception (i tak są wykluczone z FSW przez nazwę z kropką + explicit check w runner)</li>
+      <li><strong>Atomic write i rotacja uszkodzonych configów</strong> — <code>AppSettings.Save()</code> używa teraz <code>.tmp</code> + <code>File.Move</code>, więc crash w trakcie zapisu nie zostawia półpustego pliku settings.json. <code>AppSettings.Load()</code> przy <code>JsonException</code> rotuje plik do <code>.broken-yyyyMMdd-HHmmss</code> i wraca z defaultami zamiast crashować. <code>HotFolderConfigStore</code> już to miał — teraz spójna polityka w całej aplikacji</li>
+      <li><strong>Startup summary log</strong> — pierwsza linia w logu pokazuje teraz wszystkie kluczowe ścieżki: roaming, local, logs, licenses, state, hotfolders config. Diagnostyka problemów u klienta jest natychmiastowa</li>
+      <li><strong>Mniej szumu w logu</strong> — komunikat <em>"Hot folder config not found at ...; starting empty."</em> loguje się teraz tylko raz per process. Wcześniej manager VM polluował logi tym wpisem co 1,5 sekundy (interval timera odświeżania). Reszta typowo śmieciowych komunikatów też przejrzana</li>
+    </ul>
+
+    <div class="section-label changed">Drobne</div>
+    <ul>
+      <li><code>HotFolderStatusSnapshot</code> rozszerzony o pole <code>RecoveredOrphansAtStart</code> — manager VM agreguje tę liczbę między runnerami żeby renderować banner odzyskania</li>
+      <li><code>HotFolderManagerViewModel</code> bierze teraz <code>LicenseValidator</code> jako dependency, sprawdza licencję przy <code>InitializeAsync</code> i po zamknięciu <code>ActivationDialog</code></li>
+      <li>Wersja <code>1.1.0 → 1.1.1</code> (patch — runtime/UX hardening, brak nowych funkcji ani breaking changes)</li>
+    </ul>
+
+    <div class="section-label fixed">Uwagi przy aktualizacji</div>
+    <ul>
+      <li><strong>Operator nic nie musi robić</strong> — migracja licencji i szablonów odbywa się automatycznie przy pierwszym uruchomieniu 1.1.1. Po update obie ścieżki (stara i nowa) chwilowo współistnieją; nowa wygrywa, stara jest opcjonalnie usuwana (failure OK gdy brak admina). Po następnej deinstalacji 1.0.x zostawiona kopia w Program Files znika</li>
+      <li><strong>Istniejące hot foldery działają bez zmian</strong> — config <code>hotfolders.json</code> przechowuje tylko ścieżki które były wpisane wcześniej; runner przy starcie wypełnia blank pola (<code>.work</code>/<code>.archive</code>/<code>.error</code>) defaultami. Konfiguracje sprzed 1.1.1 z explicit ścieżkami nie są dotykane</li>
+      <li>Pliki w starych lokalizacjach (<code>%LocalAppData%\ImpositionApp\logs</code> itd.) nie są kasowane — operator może je sprawdzić i ręcznie usunąć po zweryfikowaniu że nowa lokalizacja działa</li>
+    </ul>
+  </article>
+
+  <!-- v1.1.0 -->
+  <article class="release">
+    <div class="release-header">
+      <span class="version">1.1.0</span>
+      <span class="date">9 maja 2026</span>
+      <span class="badge stable">Stabilna</span>
+    </div>
+    <div class="codename">„Hot Folders” — automatyczna impozycja w trybie produkcyjnym</div>
+
+    <div class="section-label added">Nowa funkcja flagowa: hot foldery</div>
+    <ul>
+      <li><strong>Pełny system hot folderów dla drukarni produkcyjnych</strong> — wskazujesz folder wejściowy, aplikacja sama wykrywa wrzucone pliki PDF, nakłada wybrany szablon, eksportuje gotowy arkusz do folderu wyjściowego i archiwizuje oryginał. Wszystko w tle, bez interakcji użytkownika. Idealne pod workflow „operator wrzuca PDF z DTP, ripper bierze gotowy arkusz”</li>
+      <li><strong>Wiele hotfolderów jednocześnie</strong> — każdy z własnym szablonem (np. <em>Saddle A4 → 4-up</em>, <em>Wizytówki gang-run</em>, <em>Broszura A5</em>). Każdy runner jest izolowany — błąd na jednym folderze nie zatrzymuje pozostałych</li>
+      <li><strong>Wielowarstwowa detekcja zakończenia kopiowania</strong> (<code>FileStabilityProbe</code>) — N kolejnych pomiarów rozmiaru + <code>LastWriteTimeUtc</code> + próba otwarcia z <code>FileShare.None</code>. Eliminuje race condition gdy kopiowanie 200&nbsp;MB PDF przez SMB jeszcze trwa, a <code>FileSystemWatcher</code> już zgłosił <code>Created</code>. Tolerancja na Defendera trzymającego exclusive lock na 2-5 sekund po zakończeniu kopiowania</li>
+      <li><strong>Polling fallback dla SMB/DFS</strong> — gdy <code>FileSystemWatcher</code> kłamie na share'ach sieciowych, drugi mechanizm robi snapshot diff folderu co N sekund. Oba źródła aktywne równolegle, deduplikator usuwa duplikaty</li>
+      <li><strong>Recovery po crashu</strong> — gdy aplikacja padnie w trakcie eksportu, ledger SQLite trzyma rekord <code>reserved</code>; przy następnym starcie pliki w <code>.work</code> wracają do <code>input</code> i są przetwarzane od nowa. Gwarancja zero-loss</li>
+      <li><strong>Ledger SQLite</strong> w <code>%LocalAppData%\ImpositionApp\state\hotfolder.db</code> z trybem WAL — historia każdego joba (kto, kiedy, ile prób, czy sukces, output path). Auto-prune wpisów starszych niż 30 dni</li>
+      <li><strong>Anty-duplikat oparty na fingerprincie</strong> — SHA-256 z pierwszego 1&nbsp;MB pliku + rozmiar + mtime. Re-export tego samego pliku po edycji = inny fingerprint = nowy job. Ten sam plik wrzucony dwa razy bez zmian = pominięty</li>
+      <li><strong>Retry przez Polly v8</strong> — exponential backoff z jitter, osobne polityki dla I/O (5×, 200ms base), eksportu (3×, 2s base) i ledgera (8×, 50ms — chroni przed <code>SQLITE_BUSY</code>). Deterministyczne błędy preflight nie są retry'owane</li>
+      <li><strong>Globalny limit procesów Ghostscript</strong> (<code>GhostscriptThrottle</code> z <code>SemaphoreSlim</code>) — bez tego N hotfolderów × M zadań × ~500&nbsp;MB RAM gs zabijało maszynę. Domyślnie max 2 procesy gs jednocześnie, konfigurowalne</li>
+      <li><strong>Walidacja licencji per job + okresowa</strong> — host sprawdza licencję przy starcie i co 60 minut w tle. Każdy export waliduje licencję jeszcze raz tuż przed startem. Wygaśnięcie w trakcie 24/7 pracy zatrzyma runnery z czytelnym komunikatem</li>
+    </ul>
+
+    <div class="section-label added">Interfejs zarządzania</div>
+    <ul>
+      <li><strong>Nowa pozycja menu: Narzędzia → Hot foldery…</strong> (<em>Tools → Hot Folders</em> w EN). Świadomie nie dodajemy przycisku do głównego paska — to funkcja produkcyjna, nie codzienna akcja obok <em>Eksportuj</em></li>
+      <li><strong>Okno managera</strong> z listą skonfigurowanych hot folderów: nazwa, status (Bezczynny / Uruchamianie / Działa / Zatrzymany / Błąd), folder wejściowy/wyjściowy, szablon, licznik OK/błędów/kolejki. Auto-refresh co 1,5 sekundy przez <code>DispatcherTimer</code></li>
+      <li><strong>Akcje na liście</strong>: Dodaj, Edytuj, Usuń, Start, Stop, Restart, Otwórz wejście, Otwórz wyjście, Otwórz logi (skrót do <code>%LocalAppData%\ImpositionApp\logs</code>)</li>
+      <li><strong>Dialog edycji</strong> z folder/file pickerami dla wszystkich ścieżek (input / output / archive / error / work / template / Ghostscript). Sekcje: Podstawowe, Foldery, Szablon i filtry, Działanie, Eksport. Walidacja na Save z banner-em zawierającym listę bullet-błędów (puste pola, ścieżki nieabsolutne, nieistniejący szablon, foldery nakładające się, brak gs przy włączonym PDF/X)</li>
+      <li><strong>Banner ostatniego błędu</strong> — gdy zaznaczony hot folder ma <code>LastError</code>, pojawia się czerwony pasek z treścią. Operator widzi co się stało bez nurkowania w logi</li>
+      <li><strong>Pełna lokalizacja PL/EN</strong> — wszystkie etykiety, statusy, komunikaty walidacji, opcje enum (<em>Po sukcesie: Nic / Archiwizuj / Usuń</em>) tłumaczone</li>
+    </ul>
+
+    <div class="section-label added">CLI</div>
+    <ul>
+      <li><strong>Komendy <code>hotfolder run/list/start/stop/reload</code></strong> — <code>imPRESS Studio.exe hotfolder run</code> uruchamia daemon w foreground (Ctrl+C zatrzymuje), gotowe pod uruchomienie jako Windows Service w przyszłej wersji. <code>hotfolder list</code> pokazuje status wszystkich folderów, <code>start</code>/<code>stop</code> przyjmują GUID hot folderu, <code>reload</code> wczytuje <code>hotfolders.json</code> ponownie i uzgadnia stan (start nowych, stop usuniętych, restart zmienionych)</li>
+    </ul>
+
+    <div class="section-label added">Konfiguracja i przechowywanie</div>
+    <ul>
+      <li><strong>Plik konfiguracji</strong> <code>%APPDATA%\imPRESS Studio\hotfolders.json</code> — atomicznie zapisywany przez <code>.tmp</code> + <code>File.Move</code>. Edytowalny ręcznie, walidowany przy każdym wczytaniu. Złamana składnia rotuje plik do <code>.broken-{timestamp}</code> zamiast pożerać konfigurację</li>
+      <li><strong>Walidator</strong> wymusza absolutne ścieżki, niepustość pól wymaganych, istnienie szablonu na dysku i — krytyczne — odrzuca konfigurację gdzie <code>workPath</code>/<code>archivePath</code>/<code>errorPath</code>/<code>outputPath</code> leży <em>wewnątrz</em> <code>inputPath</code> (klasyczny błąd początkujących powodujący nieskończoną pętlę: aplikacja przerabia własne wyjścia)</li>
+      <li><strong>Long path support</strong> — manifest aplikacji deklaruje <code>longPathAware=true</code> i <code>perMonitorV2</code> DPI awareness. Hot foldery na głębokich mapowanych dyskach nie są już ograniczone do 260 znaków</li>
+    </ul>
+
+    <div class="section-label changed">Architektura i zależności</div>
+    <ul>
+      <li>Nowy moduł <code>Imposition.HotFolder</code> — Configuration / Watching / Queueing / State / Processing / Hosting / Diagnostics / DependencyInjection. Zero powiązań z UI, w pełni używalne z CLI, gotowe pod future REST API / Windows Service</li>
+      <li>Dodane pakiety NuGet: <code>Microsoft.Data.Sqlite 8.0.10</code> (ledger), <code>Polly</code> + <code>Polly.Core 8.4.2</code> (retry/backoff), <code>Microsoft.Extensions.Hosting 8.0.0</code> (<code>IHostedService</code> dla cyklu życia hosta)</li>
+      <li><code>HotFolderHost</code> implementuje <code>IHostedService</code> — gotowy pod hostowanie w generic host. Startowany z <code>Program.Main</code> przed Avalonią (GUI) lub jako foreground daemon (CLI). Drugi tryb jest fundamentem pod uruchomienie jako Windows Service w przyszłej wersji</li>
+      <li>Wersja aplikacji <code>1.0.8 → 1.1.0</code> (minor bump zgodnie z SemVer — nowa, kompatybilna funkcjonalność)</li>
+    </ul>
+
+    <div class="section-label added">Odporność produkcyjna</div>
+    <ul>
+      <li><strong>Atomowa state machine plików</strong>: <code>input → .work/{jobId}__file.pdf → output + archive (lub error)</code>. <code>File.Move</code> na NTFS atomowy w obrębie woluminu; po przeniesieniu do <code>.work</code> plik jest niewidzialny dla <code>FileSystemWatcher</code>, co eliminuje duplikaty z innych instancji aplikacji</li>
+      <li><strong>Backoff exponential z jitter</strong> dla wszystkich operacji I/O — nie zalewamy NAS-a powtórzonymi requestami w czasie krótkiej awarii sieci</li>
+      <li><strong>Top-level try/catch w każdej pętli <code>Task.Run</code></strong> — żaden wyjątek z producenta/konsumenta/poller'a/recovery loopu nie wykończy procesu w ciszy</li>
+      <li><strong>Recreate watchera po <code>InternalBufferOverflowException</code></strong> + automatyczny full rescan folderu — bez tego po overflow gubilibyśmy eventy dla brakujących plików na zawsze. Dodatkowy auto-recovery loop po dowolnym <code>FSW.Error</code> z exponential backoff</li>
+      <li><strong>Channel<T> z bounded capacity i <code>FullMode=Wait</code></strong> dla kolejki jobów — jobów nie tracimy, ale producent czeka asynchronicznie gdy konsument utknie. Pod skrajnym DDoS-em (10000 plików nagle) nie wybuchamy z OOM</li>
+    </ul>
+
+    <div class="section-label fixed">Uwagi przy aktualizacji</div>
+    <ul>
+      <li><strong>Bez breaking changes</strong> — istniejący workflow (Eksportuj, CLI <code>impose</code>, szablony, licencje) działa identycznie. Hot foldery to dodatek, włącza go się przez menu</li>
+      <li><strong>Hot foldery wymagają ważnej licencji</strong> — host nie wystartuje runnerów gdy licencja jest niepoprawna lub wygasła. To samo dotyczy <code>hotfolder run</code> z CLI</li>
+      <li>Pierwsze uruchomienie tworzy <code>%APPDATA%\imPRESS Studio\hotfolders.json</code> oraz <code>%LocalAppData%\ImpositionApp\state\hotfolder.db</code> przy pierwszym save w UI — pliki nie powstają same z siebie przy update</li>
+    </ul>
+  </article>
+
+  <!-- v1.0.8 -->
+  <article class="release">
+    <div class="release-header">
+      <span class="version">1.0.8</span>
+      <span class="date">26 kwietnia 2026</span>
+      <span class="badge stable">Stabilna</span>
+    </div>
+    <div class="codename">„Color &amp; Clock” — zarządzanie ICC + ochrona przed cofnięciem zegara</div>
+
+    <div class="section-label added">Nowe funkcje</div>
+    <ul>
+      <li><strong>Pełne zarządzanie profilami ICC w oknie eksportu</strong> — pole tekstowe zastąpione listą rozwijaną z auto-skanowaniem folderu <code>icc/</code> w katalogu instalacji. Pozycja <em>(brak)</em> dla eksportu bez konwersji. Przycisk <em>Wczytaj…</em> otwiera systemowy file picker (filtr <code>*.icc / *.icm</code>), wybrany profil jest kopiowany do <code>icc/</code> i automatycznie wybrany. Przycisk <em>Folder</em> otwiera katalog w Eksploratorze do ręcznych dodatków. Pod listą podpowiedź pokazuje liczbę dostępnych profili i ścieżkę</li>
+      <li><strong>Ochrona licencji przed cofnięciem zegara</strong> — nowy <code>LicenseClockGuard</code> przy każdej udanej walidacji zapisuje HMAC-podpisany znacznik czasu w <code>%LocalAppData%\imPRESS Studio\license.stamp</code>. Klucz HMAC pochodzi z podpisu licencji (więc znacznik jest licencja-specific i nie da się go skopiować z innej maszyny). Przy następnej walidacji jeśli zegar systemowy cofnął się o więcej niż 2h przed zapisaną wartość — eksport zablokowany z komunikatem <em>„Wykryto cofnięcie zegara systemowego”</em>. Tolerancja 2h na driftu NTP / DST. Edycja pliku <code>.stamp</code> wykrywana przez weryfikację HMAC i traktowana jako tampering</li>
+    </ul>
+
+    <div class="section-label changed">Zmiany</div>
+    <ul>
+      <li><strong>Email kontaktowy</strong> w oknie <em>O programie</em> zaktualizowany na <code>impress_studio@proton.me</code> (poprzednio <code>wojciech.bujacz@hotmail.com</code>)</li>
+    </ul>
+  </article>
+
+  <!-- v1.0.7 -->
+  <article class="release">
+    <div class="release-header">
+      <span class="version">1.0.7</span>
+      <span class="date">26 kwietnia 2026</span>
+      <span class="badge stable">Stabilna</span>
+    </div>
+    <div class="codename">„License Hardening” — szczelny gate eksportu, nowy fingerprint i tolerancja sprzętowa</div>
+
+    <div class="section-label fixed">Krytyczne poprawki</div>
+    <ul>
+      <li><strong>Eksport bez licencji — załatany</strong> — kliknięcie <em>Eksportuj</em> bez ważnej licencji generowało plik PDF mimo wszystko. Teraz <code>MainWindowViewModel.ExportAsync</code> twardo waliduje licencję <em>z dysku</em> na każde wywołanie (nie tylko cached <code>App.LicenseStatus</code> z momentu startu) — zamyka okno, w którym ktoś usuwał plik mid-session albo licencja wygasała w trakcie pracy. Identyczny gate w trybie CLI (<code>impose</code>): exit code 2 + komunikat z hintem do <code>license activate</code></li>
+    </ul>
+
+    <div class="section-label changed">Nowy fingerprint sprzętowy</div>
+    <ul>
+      <li><strong>Hostname usunięty</strong> — nazwa komputera była nietrwałym identyfikatorem (zmiana 5-sekundowa, świetnie obchodzona). Już nie ma żadnego udziału w fingerprint</li>
+      <li><strong>3 niezależne komponenty</strong>: SHA-256 z (a) MAC adresu pierwszego fizycznego NIC z filtrem na virtuals (VMware/Hyper-V/Bluetooth/loopback są pomijane), (b) numeru seryjnego dysku systemowego (<code>InterfaceType ≠ USB AND MediaType LIKE 'Fixed%'</code> — pendrive się nie liczy), (c) UUID systemowego z SMBIOS (<code>Win32_ComputerSystemProduct</code>)</li>
+      <li><strong>Tolerancja 2 z 3</strong> — licencja waliduje się gdy ≥ 2 z 3 komponentów się zgadza. Wymiana karty sieciowej, dysku albo czyszczenie BIOS-a — pojedyncza zmiana nie wywala licencji. Dwie zmiany jednocześnie (<code>1/3</code>) → komunikat <em>„licencja jest przypisana do innego komputera (1/3 elementow zgodnych — wymagana ponowna aktywacja)"</em></li>
+      <li><strong>Backward compat</strong> — stare licencje pre-1.0.7 z pojedynczym <code>MachineHash</code> nadal walidują się normalnie przez fallback na composite. Nikt nie traci dostępu</li>
+    </ul>
+
+    <div class="section-label added">Narzędzia wydawcy</div>
+    <ul>
+      <li><strong>Pole <em>Identyfikator komputera</em> w oknie aktywacji</strong> pokazuje teraz string w formacie <code>MAC=...|DISK=...|UUID=...</code> — klient kopiuje całość i wysyła wydawcy</li>
+      <li><strong>Skrypt PowerShell <code>tools/Issue-License.ps1</code></strong> — wrapper na CLI. Wydawca (Ty) wpisuje:
+        <pre><code>.\tools\Issue-License.ps1 -Name "Drukarnia ABC" -Email "biuro@abc.pl" `
+    -Edition Standard -Days 365 `
+    -Fingerprint "MAC=A1B2...|DISK=C3D4...|UUID=E5F6..."</code></pre>
+        Skrypt: lokalizuje exe, w razie braku auto-generuje parę kluczy RSA, wywołuje <code>license issue</code>, parsuje activation key z output i zapisuje do <code>issued/license_&lt;slug&gt;.key.txt</code> gotowy do maila. Ostrzega gdy &lt; 2 komponentów (brak budżetu na tolerancję)</li>
+      <li>CLI <code>license fingerprint</code> pokazuje teraz wszystkie 3 hashy + jednolinijkowy format do polecenia <code>issue</code>; <code>license issue</code> akceptuje <code>--mac</code>/<code>--disk</code>/<code>--uuid</code> (zalecane) lub <code>--machine</code> (legacy strict)</li>
+    </ul>
+
+    <div class="section-label fixed">Uwagi dla wydawcy</div>
+    <ul>
+      <li>Po pierwszym <code>license keygen</code> wklej zawartość <code>license_public.xml</code> do <code>LicenseValidator.PublicKeyXml</code> i przebuduj. Klucz prywatny <strong>nigdy</strong> nie idzie z aplikacją</li>
+    </ul>
+  </article>
+
+  <!-- v1.0.6 -->
+  <article class="release">
+    <div class="release-header">
+      <span class="version">1.0.6</span>
+      <span class="date">26 kwietnia 2026</span>
+      <span class="badge stable">Stabilna</span>
+    </div>
+    <div class="codename">„Progressive Zoom” — natychmiastowy podgląd przy powiększaniu</div>
+
+    <div class="section-label changed">Wydajność podglądu</div>
+    <ul>
+      <li><strong>Progressive load (jak Google Maps)</strong> — gdy użytkownik powiększa stronę i nowa skala jest jeszcze rasteryzowana w tle, canvas natychmiast pokazuje najlepszy wcześniej zcache'owany bitmap (przeskalowany do nowego rozmiaru). Wynik jest chwilowo miękki, ale widoczny od razu — ostry render dochodzi po 0,5–2s zamiast pustego placeholdera</li>
+      <li><strong>Coarsene scale buckets</strong> — zamiast 19 poziomów rozdzielczości (skok co 0,25) tylko 5 dyskretnych poziomów: <code>1.5 / 2.0 / 3.0 / 4.5 / 6.0×</code>. Wiele kroków zoomu wpada w ten sam bucket, znacznie redukując liczbę pełnych re-rasteryzacji PDF-a</li>
+      <li><strong>Cancel-na-zoom-spam</strong> — gdy użytkownik szybko zoomuje 1×→2×→3×→4×, stare requesty kończą się w tle ale nie odświeżają już canvasa. Bez tego każda kropla scrolla wywoływała pełny repaint na pośrednim, już nieaktualnym poziomie</li>
+      <li><strong>Filter cache po referencji bitmapy</strong> — cache filtra kanałów CMYK + overprint trzyma teraz klucz na <em>referencji</em> źródłowego bitmapu, nie indeksie strony. Eliminuje subtelny stale-bitmap bug przy zmianie skali z aktywnym filtrem</li>
+    </ul>
+
+    <div class="section-label fixed">Uwagi techniczne</div>
+    <ul>
+      <li>PDFium/Docnet rasteryzuje per-stronę na CPU — to jest faktyczne wąskie gardło (przy A4 6× to ~18 megapikseli per strona). Hardware nie pomoże, dlatego optymalizacja wchodzi w warstwę pipeline'u rasteryzacji i schedulowania, nie renderingu Skii (która już używa GPU pod spodem). Plik 100 MB i tak będzie wolniejszy niż 11 MB — ale teraz nigdy nie zobaczysz pustego ekranu, tylko płynne dochodzenie do ostrości</li>
+    </ul>
+  </article>
+
+  <!-- v1.0.5 -->
+  <article class="release">
+    <div class="release-header">
+      <span class="version">1.0.5</span>
+      <span class="date">26 kwietnia 2026</span>
+      <span class="badge stable">Stabilna</span>
+    </div>
+    <div class="codename">„Ink Inspector” — separacja kanałów CMYK + próbnik koloru</div>
+
+    <div class="section-label added">Nowe funkcje</div>
+    <ul>
+      <li><strong>Toggle kanałów CMYK</strong> — cztery checkboxy w pasku opcji podglądu (<em>C / M / Y / K</em>). Wyłączenie któregokolwiek zdejmuje wybrany ink z arkusza, pozwalając obejrzeć separację. Implementacja przez konwersję RGB→CMYK→RGB per pixel z zerowaniem wybranego kanału. Wynik cachowany per (strona, maska kanałów, overprint), więc przełączanie jest natychmiastowe</li>
+      <li><strong>Próbnik koloru (eyedropper)</strong> — pływający panel w prawym dolnym rogu canvasa pokazuje pod kursorem: kwadrat z kolorem, wartości <code>R G B</code> (0-255) oraz <code>C M Y K</code> (0-100%). Pomiar bierze piksel z surowego renderu, niezależnie od aktywnego filtra kanałów</li>
+    </ul>
+
+    <div class="section-label changed">Zmiany</div>
+    <ul>
+      <li>Pasek opcji podglądu poszerzony o sekcję <em>Kanały:</em> z separatorem od dotychczasowych togglów (Spread / Marks / Creep / Overprint)</li>
+      <li>Litery C/M/Y/K w checkboxach kolorowane zgodnie z kanałem (cyan/magenta/yellow/black) — wizualna mnemonika</li>
+    </ul>
+
+    <div class="section-label fixed">Uwagi</div>
+    <ul>
+      <li><strong>Symulacja, nie prawdziwa separacja</strong> — Docnet/PDFium daje composite RGB, nie ma sposobu odzyskać oryginalne plates bez ponownego przepuszczenia PDF-a przez Ghostscript z urządzeniem <code>tiffsep</code>. Filtr per-pixel daje plausible „pokaż mi tylko cyjan" wystarczająco wiernie do proofingu wzrokowego — do akceptacji prepress użyj eksportu PDF/X i zewnętrznego RIP-a</li>
+    </ul>
+  </article>
+
+  <!-- v1.0.4 -->
+  <article class="release">
+    <div class="release-header">
+      <span class="version">1.0.4</span>
+      <span class="date">26 kwietnia 2026</span>
+      <span class="badge stable">Stabilna</span>
+    </div>
+    <div class="codename">„Adaptive Preview” — szybszy podgląd dużych PDF-ów</div>
+
+    <div class="section-label added">Nowe funkcje</div>
+    <ul>
+      <li><strong>Równoległa rasteryzacja stron</strong> — silnik podglądu (<code>PdfPreviewRenderer</code>) używa puli wątków ograniczonej do <code>Math.Min(4, ProcessorCount-1)</code> przez <code>SemaphoreSlim</code>. Wcześniej każda strona renderowała się sekwencyjnie; teraz na 4-rdzeniowym CPU 4 strony liczą się jednocześnie</li>
+      <li><strong>Pre-rendering sąsiednich arkuszy</strong> — przy zmianie aktualnego arkusza w tle ładują się strony arkuszy <code>−1</code>, <code>+1</code>, <code>+2</code>. Nawigacja strzałkami / kliknięciem miniatury jest natychmiastowa zamiast czekania ~sekunda na każdy nowy arkusz</li>
+      <li><strong>Kwantyzacja zoomu (cache buckets)</strong> — skala renderu zaokrąglana do siatki 0,25× i ograniczana do max 6×. Zoom 1,01× → 1,02× nie wywołuje już ponownej rasteryzacji, bo trafia w ten sam bucket cache</li>
+      <li><strong>LRU cache z limitem 80 bitmap</strong> — przy przekroczeniu limitu pamięci cache wycina 10% najstarszych wpisów. Wcześniej cache rósł nieograniczenie i zjadał kilkaset MB przy długich sesjach</li>
+    </ul>
+
+    <div class="section-label changed">Zmiany</div>
+    <ul>
+      <li>Avalonia 11 / Skia już używa GPU (Direct3D 11 / OpenGL na Windows) — nie wprowadzono dodatkowej warstwy OpenGL, bo wąskim gardłem nie był rendering canvasa, lecz CPU-bound rasteryzacja PDF przez Docnet/PDFium. Optymalizacje skupione tam, gdzie liczy się czas</li>
+      <li><code>RenderAndCache</code> nie blokuje już Task.Run wątku w nieskończoność — semafor gwarantuje, że szybki tryb prefetch nie zagłodzi UI</li>
+    </ul>
+
+    <div class="section-label fixed">Poprawki</div>
+    <ul>
+      <li><strong>Strict preflight + dialog raportu</strong> — gdy dostępny jest interaktywny dialog raportu (tryb UI), <code>StrictPreflight</code> nie wyrzuca już wyjątku przed pokazaniem raportu. Użytkownik widzi listę 5 ostrzeżeń i sam decyduje. CLI bez callbacka nadal honoruje strict</li>
+      <li><strong>Race condition w PreflightReportDialog</strong> — dialog tworzony jest teraz przez <code>Dispatcher.UIThread.InvokeAsync</code> (pipeline wywołuje callback z wątku roboczego)</li>
+      <li><strong>installer.iss</strong> — guard <code>#if !DirExists()</code> z czytelnym komunikatem zamiast cryptycznego „No files found" gdy katalog <code>publish/</code> nie istnieje</li>
+    </ul>
+  </article>
+
+  <!-- v1.0.3 -->
+  <article class="release">
+    <div class="release-header">
+      <span class="version">1.0.3</span>
+      <span class="date">26 kwietnia 2026</span>
+      <span class="badge stable">Stabilna</span>
+    </div>
+    <div class="codename">„Print-Ready” — PDF/X-1a, raport preflight i numeracja w podglądzie</div>
+
+    <div class="section-label added">Nowe funkcje</div>
+    <ul>
+      <li><strong>Eksport PDF/X-1a:2001</strong> — obok PDF/X-4 dostępny jest teraz starszy standard <em>PDF/X-1a</em> wymagany przez wiele drukarni offsetowych. PDF 1.4, tylko CMYK, bez przezroczystości. Wybór standardu z listy rozwijanej w oknie eksportu (Brak / X-1a / X-4)</li>
+      <li><strong>Raport preflight przed eksportem</strong> — gdy walidacja źródłowego PDF-u znajdzie ostrzeżenia (RGB-only zamiast CMYK, brakujący profil ICC, transparencja w trybie X-1a, zaszyfrowany plik, niezgodny rozmiar trim, PDF wyższej wersji niż docelowy standard), aplikacja pokazuje czytelny dialog z listą znalezisk pogrupowanych po wadze (błąd / ostrzeżenie / info). Użytkownik może kontynuować lub anulować</li>
+      <li><strong>Numerowanie arkuszy widoczne na podglądzie</strong> — wcześniej numer arkusza był stemplowany dopiero w eksportowanym PDF. Teraz nakładka pojawia się też na <em>ImpositionCanvas</em> w czasie rzeczywistym — gdy zmieniasz pozycję lub format w oknie eksportu, podgląd aktualizuje się natychmiast. Renderowanie w pełni wektorowe (FormattedText), bez wpływu na FPS przy zoomie</li>
+      <li><strong>Rozszerzona walidacja preflight</strong> — nowe reguły: <code>RGB_ONLY</code> (źródło tylko RGB), <code>NO_ICC</code> (obrazy bez ICC), <code>ENCRYPTED</code> (PDF zaszyfrowany), <code>X1A_TRANSPARENCY</code>, <code>X1A_OCG</code>, <code>X1A_VERSION</code>, <code>X4_VERSION</code></li>
+    </ul>
+
+    <div class="section-label changed">Zmiany</div>
+    <ul>
+      <li>Pole <em>Konwertuj do PDF/X-4</em> w oknie eksportu zastąpione listą rozwijaną <em>Standard PDF/X</em></li>
+      <li><code>ExportOptions.ConvertToPdfX4</code> zachowane jako shim dla kompatybilności — pod spodem ustawia <code>PdfXMode</code></li>
+      <li>Argumenty Ghostscript dobierane automatycznie pod docelowy standard (<code>CompatibilityLevel=1.4</code> dla X-1a, <code>1.6</code> dla X-4)</li>
+      <li><code>ExportPipeline.RunAsync</code> przyjmuje opcjonalny callback <em>confirmAfterPreflight</em> — UI pokazuje raport, CLI pomija dialog</li>
+    </ul>
+  </article>
+
+  <!-- v1.0.2 -->
+  <article class="release">
+    <div class="release-header">
+      <span class="version">1.0.2</span>
+      <span class="date">26 kwietnia 2026</span>
+      <span class="badge stable">Stabilna</span>
+    </div>
+    <div class="codename">„Numbering &amp; Persistence” — numerowanie arkuszy i zapamiętywanie opcji eksportu</div>
+
+    <div class="section-label added">Nowe funkcje</div>
+    <ul>
+      <li><strong>Numerowanie arkuszy</strong> — opcja w oknie eksportu stempluje numer arkusza na każdym wyjściowym arkuszu. Konfigurowalne: pozycja (6 wariantów: rogi i środki góra/dół), format (np. <code>{0} / {1}</code>, <code>Arkusz {0}</code>), domyślnie <em>Prawy dolny</em></li>
+      <li><strong>Wybierak pliku Ghostscript</strong> — przycisk <code>...</code> obok pola ścieżki otwiera systemowy dialog z filtrem na <code>gswin64c.exe</code> / <code>gswin32c.exe</code></li>
+      <li><strong>Instalator Inno Setup</strong> — pełny kreator z wyborem katalogu instalacji, folderu w menu Start, opcjonalnym skrótem na pulpicie. Czysta deinstalacja przez Panel Sterowania</li>
+      <li><strong>Auto-aktualizacja przez GitHub Releases</strong> — przy starcie aplikacja sprawdza najnowszy tag na <code>dnblsr-lab/imPRESS-Studio</code> i oferuje pobranie nowszego instalatora</li>
+    </ul>
+
+    <div class="section-label fixed">Poprawki</div>
+    <ul>
+      <li><strong>Trwałość opcji eksportu</strong> — ścieżka do Ghostscripta, profil ICC, ustawienia preflight i zakres arkuszy są teraz zapisywane w <code>%APPDATA%\imPRESS Studio\settings.json</code> i przywracane przy następnym otwarciu okna eksportu (wcześniej każde otwarcie czyściło pola)</li>
+    </ul>
+
+    <div class="section-label changed">Zmiany</div>
+    <ul>
+      <li>Wersjonowanie zgodne z SemVer — z <code>1.01</code> na <code>1.0.2</code> (poprzednie <code>1.01</code> traktowane jako <code>1.0.1</code>)</li>
+      <li>Velopack zastąpiony przez Inno Setup — instalator daje pełną kontrolę użytkownikowi nad miejscem instalacji i skrótami</li>
+      <li>Okno eksportu rozszerzone o sekcję <em>Numerowanie stron</em> + <em>ScrollViewer</em> dla wygody przy mniejszych rozdzielczościach</li>
+    </ul>
+  </article>
+
+  <!-- v1.01 -->
+  <article class="release">
     <div class="release-header">
       <span class="version">1.01</span>
       <span class="date">19 kwietnia 2026</span>
-      <span class="badge latest">Najnowsza</span>
       <span class="badge stable">Stabilna</span>
     </div>
     <div class="codename">„Polish Pass” — menu, ustawienia i gang-run</div>
@@ -442,13 +952,14 @@
 
     <div class="section-label added">Na roadmapie</div>
     <ul>
-      <li>Wsparcie <strong>PDF/X-1a</strong> i <strong>PDF/X-3</strong> obok PDF/X-4</li>
-      <li><strong>Hot folder</strong> — wbudowane monitorowanie folderu z automatyczną impozycją</li>
-      <li><strong>Integracja JDF/JMF</strong> — komunikacja z systemami MIS/ERP</li>
+      <li><strong>Wersja Windows Service</strong> dla hot folderów — daemon poza kontekstem zalogowanego użytkownika, autostart przy boot, zarządzanie przez SCM. Obecnie hot folder host można uruchomić z CLI (<code>imPRESS Studio.exe hotfolder run</code>) jako foreground proces — Windows Service wrapper to naturalne rozszerzenie</li>
+      <li><strong>REST API + webhooki</strong> dla hot folderów — POST <code>/jobs</code> z PDF + JSON config, webhook on completion, integracja z MIS</li>
+      <li><strong>Integracja JDF/JMF</strong> — komunikacja z systemami MIS/ERP, parser job ticketów dla hot folderów</li>
       <li>Wersja <strong>macOS</strong> i <strong>Linux</strong> (Avalonia jest cross-platform)</li>
       <li><strong>Silnik preview OpenGL</strong> dla szybszego renderu dużych arkuszy</li>
-      <li><strong>Kolejne języki UI</strong> — niemiecki i czeski (PL/EN już dostępne w 1.01)</li>
+      <li><strong>Kolejne języki UI</strong> — niemiecki i czeski (PL/EN już dostępne)</li>
       <li><strong>Więcej szablonów gang-run</strong> — etykiety, naklejki, karty lojalnościowe</li>
+      <li><strong>Multi-template per hot folder</strong> z regex routingiem (np. <code>A4_*.pdf → 4-up</code>, <code>A3_*.pdf → 8-up</code>)</li>
     </ul>
   </article>
 
@@ -456,7 +967,7 @@
 
 <footer>
   <p>imPRESS Studio — profesjonalne narzędzie do impozycji PDF<br>
-  © 2026 WB — <a href="mailto:impress_studio@proton.me">impress_studio@proton.me</a></p>
+  © 2026 Wojciech Bujacz — <a href="mailto:impress_studio@proton.me">impress_studio@proton.me</a></p>
   <p><a href="help.html">Pełna instrukcja</a>  |  <a href="faq.html">FAQ</a></p>
 </footer>
 
