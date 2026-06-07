@@ -65,6 +65,7 @@ This section is a clean public English overview generated from the Polish source
 - Labels were corrected from “JSON” to `.lic`, matching the actual user-facing file extension.
 - Activation logic is unchanged; this release only improves UI clarity.
 
+av check:
 https://www.virustotal.com/gui/file/9ee13a548deebe19ff25e4a094653f0f2a3c42252eab820bfb828ebe304a5ba6?nocache=1
 
 ## 1.3.6 — June 7, 2026 (Hotfix)
