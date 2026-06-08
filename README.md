@@ -1,12 +1,12 @@
-A note about installing on Windows
+<b> !!! A note about installing on Windows
 imPRESS Studio is independent, self-published software. Because we don't pay for expensive corporate Microsoft certificates, Windows SmartScreen may show a blue warning when you launch the installer.
-How to run it? Click “More info”, then “Run anyway”. We guarantee the application code is 100% safe and free of malware.
+How to run it? Click “More info”, then “Run anyway”. We guarantee the application code is 100% safe and free of malware. !!!
 
-Informacja o instalacji na systemie Windows
+!!! Informacja o instalacji na systemie Windows
 imPRESS Studio jest niezależnym, autorskim oprogramowaniem. Ponieważ nie korzystamy z drogich korporacyjnych certyfikatów Microsoftu, Windows SmartScreen może wyświetlić niebieskie ostrzeżenie podczas uruchamiania instalatora.
-Jak uruchomić program? Kliknij „Więcej informacji”, a następnie „Uruchom mimo to”. Gwarantujemy, że kod aplikacji jest w 100% bezpieczny i wolny od złośliwego oprogramowania.
+Jak uruchomić program? Kliknij „Więcej informacji”, a następnie „Uruchom mimo to”. Gwarantujemy, że kod aplikacji jest w 100% bezpieczny i wolny od złośliwego oprogramowania. !!!
 
-
+</b>
 
 <html lang="pl">
 <head>
