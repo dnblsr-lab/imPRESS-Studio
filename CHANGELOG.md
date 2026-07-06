@@ -13,8 +13,49 @@ Installers for released versions are published on the project's GitHub Releases 
 - REST API + webhooks for hot folders (submit jobs via `POST /jobs`, completion callbacks, MIS integration).
 - JDF/JMF integration (job-ticket parsing for hot folders).
 - macOS and Linux builds (Avalonia is cross-platform).
-- OpenGL preview engine for faster large-sheet rendering.
 - Additional UI languages (German, Czech), more gang-run presets, per-hot-folder multi-template routing by filename pattern.
+
+## [1.4.8] - 2026-07-06
+
+Major release: ticket numbering, work-and-turn, front/back registration preview, sheet advisor, ink-coverage scan, PDF/X-3, Preflight 2.0, CLI parity and a batch of fixes.
+
+### Added
+- **Ticket numbering (variable data lite).** A consecutive number on every item — tickets, coupons, raffle stubs: start number, step (negative allowed), .NET format with the `{0}` token (e.g. `"No {0:0000}"`), 9 anchor positions, offsets and font size. The sequence is continuous across sheets (sheet order, then slot order), stamped on fronts; the preview shows exactly the numbers the export writes. New "Ticket numbering" section in the template editor, format/step validation, verified end-to-end with a rendered 15-up sheet.
+- **Work-and-turn duplex mode (Ganging).** One form carries the fronts on the left half of the grid and the backs on the right half at exactly mirrored positions; the sheet is printed, turned left-to-right and printed again with the same form — **half the CTP plates**, and every cell yields a complete duplex product after cutting. Mode selector (Sheetwise / WorkAndTurn) next to the Duplex checkbox; validation enforces an even N-up X. Mirror geometry pinned by tests and verified visually.
+- **Front/back registration preview.** A new canvas toolbar toggle overlays the back side **mirrored** at 50% opacity on the front — like holding the sheet against the light. Front/back layout misregistration is visible instantly; the overlay registers no hit areas (clicks still select front slots) and cooperates with the scene cache.
+- **Sheet advisor.** "Compare sheets…" in the template editor ranks every paper size by utilisation for the current item (bleed/gutter/margin honoured, 90° item rotation considered): "SRA3: 15 pcs · 86% · 3×5". Pure math on the layout optimizer (new `SheetAdvisor` in Core, with tests).
+- **Ink-coverage scan (inkcov).** An on-demand Ghostscript scan in the file-info window: average C/M/Y/K coverage per page plus the Σ total, pages above 250% flagged ⚠. Honestly labelled as a page average (not a per-pixel maximum) — no fake TAC guarantees.
+- **PDF/X-3:2003 export** — the third target next to X-1a and X-4 (PDF 1.4, ICC-based colour, no live transparency); full chain: export dialog, PDFX_def, GS arguments, `.pdfx3.pdf` suffix, preflight rules (`X3_TRANSPARENCY`, `X3_VERSION`), hot folders and CLI.
+- **CLI parity with the GUI:** new `impose` options `--pdfx none|x1a|x3|x4`, `--icc`, `--sheet-range`, `--page-range`, `--numbering`, `--strict-preflight` (legacy `--pdfx4` still works).
+- **Hot folders:** per-folder sheet numbering and cutting-guide options (two new checkboxes in the edit dialog + `hotfolders.json` fields).
+- **Ctrl+Z / Ctrl+Y for slot edits** — the previously unused `UndoRedoStack` is now wired to the inspector: every slot edit (move/rotate/blank) is undoable; the stack clears on a new plan.
+- **Custom paper sizes survive restarts** — persisted in settings.json and re-registered at startup (they used to live only in process memory).
+- **License activation dialog:** a "Renewal & transfer" section — a pre-filled renewal e-mail with the machine fingerprint, and local deactivation (with confirmation) as the first step of a license transfer.
+
+### Fixed
+- **Preview bitmap eviction race** — evicted bitmaps are now disposed on the UI thread (between frames); no more `ObjectDisposedException` risk during aggressive zooming of large jobs.
+- **Eyedropper UI hitch** — sampling now reads only cached bitmaps (no synchronous render on the UI thread).
+- **Step & Repeat duplex:** backs are mirrored across the sheet width with rotation pairing (AlternatingColumns/Checkerboard with even column counts now register front-to-back) and carry the back-side flag.
+- **Working merge moved to the temp directory** — no more `merged_imposition.pdf` silently overwritten next to the user's source files; the default output path still lands next to the sources, and the previous working merge is cleaned up.
+- **"Page range × slot edits" warning** — exporting with a source page range now states explicitly (status + history) that manual slot edits will not be part of that export.
+- **Event-subscription leaks** — the main and preview view-models implement `IDisposable` and detach from long-lived services (renderer, units, localization) when the window closes.
+
+### Also in this release (preflight & suggestions)
+- **Page-count-driven template suggestions.** The suggestion library previously knew only flat products and rolls — a 16-page A5 PDF was suggested a "flyer". The engine now honours the source page count: **≥ 5 pages** surfaces **saddle-stitched A4/A5/A6 booklets** (2-up spread on SRA3, 8-page signature, duplex), **49+ pages** adds **perfect-bound A4/A5 catalogues**, and a document of **exactly 5–6 DL pages** proposes a **Z-fold DL leaflet** with correct fold geometry (panels meeting at the fold lines: zero bleed/margin on a landscape A4 sheet). Each carries a dedicated rationale explaining why it appeared. On a dimensional tie the page-count-justified product outranks the flat one, and fixed-capacity products (Z-fold = 6 pages) hide for longer documents.
+- **New flat presets:** square flyers 148×148 and 210×210 mm, a 50×200 mm bookmark, and a B2 poster (1-up on a B2 sheet).
+- **Deep preflight — new "Page content & interactive elements" category:**
+  - `TEXT_TOO_SMALL` — glyphs below 4 pt (sizes read from the transformed text matrix, so content-stream scaling cannot fool it); reports the smallest size found.
+  - `TEXT_REGISTRATION_BLACK` — text filled with C=M=Y=K=100%: 400% ink and coloured fringes on misregistration; body text should be K-100.
+  - `HAIRLINE_STROKES` — paths stroked with an explicit width of 0 ("0 w") that vanish on the platesetter. Only the literal zero is flagged — the one value that survives any content-stream transform (PdfPig exposes raw, untransformed widths), so no false positives.
+  - `BLANK_PAGES` — aggregated info listing pages with no text or images.
+  - Annotation census (`ANNOTATIONS_MARKUP` warning for comments/stamps, `FORM_FIELDS` warning for AcroForm widgets — also when declared only in the catalog, `ANNOTATIONS_LINKS` info for harmless hyperlinks) via a new per-page annotation walker.
+- **Quick preflight — binding and orientation diagnostics:** `TRIM_ROTATED` (pages matching the template trim only after a 90° turn get one aggregated hint instead of per-page mismatch warnings), `SIGNATURE_PADDING` (how many blank pages the signature will add), `SADDLE_TOO_THICK` (saddle stitch above 64 pages — consider perfect binding), `DUPLEX_ODD_PAGES` (odd page count in duplex ganging → empty last back).
+
+### Changed
+- Stricter template validation: negative spine width rejected; a safe zone consuming the whole item (2×safe ≥ shorter trim side) reports a clear error; legacy inline marks get numeric sanity checks (zero crop length, negative offsets, zero OPOS marker size while enabled).
+
+### Tests
+- 275/275 passing (40 new in this release), including an end-to-end fixture: a real PDF authored with 3 pt text, registration-black text, a zero-width stroke and a blank page runs through the deep analyzer and every new check fires. Ticket numbering, work-and-turn geometry and the new CLI options verified visually via CLI + Ghostscript renders.
 
 ## [1.4.7] - 2026-07-04
 
