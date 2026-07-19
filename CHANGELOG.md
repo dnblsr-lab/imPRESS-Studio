@@ -13,7 +13,80 @@ Installers for released versions are published on the project's GitHub Releases 
 - REST API + webhooks for hot folders (submit jobs via `POST /jobs`, completion callbacks, MIS integration).
 - JDF/JMF integration (job-ticket parsing for hot folders).
 - macOS and Linux builds (Avalonia is cross-platform).
+- OpenGL preview engine for faster large-sheet rendering.
 - Additional UI languages (German, Czech), more gang-run presets, per-hot-folder multi-template routing by filename pattern.
+
+## [1.5.3] - 2026-07-14
+
+UX fix pack: clean start with no template, an honest status bar, tabbed file info.
+
+### Fixed
+- **No template forced at startup.** The app no longer auto-loads the bundled "A4 saddle-stitched booklet" sample — the user picks a template (manager, suggestions or a file). Auto-load still honours a deliberately saved default `template.json` in the user profile.
+- **Honest status bar.** Removed the always-green "Validation OK" pill (nothing had been checked yet) and the static "3.0 mm · CMYK · 300dpi" decoration shown before anything was loaded. The bleed pill now appears only when a template is active and shows its real bleed.
+- **"Duplex: true" in the Polish UI** — booleans in the inspector now render as localized "Tak / Nie" (Yes / No) via a shared converter.
+- **"Avalonia.Data.Binding" rendered instead of an empty state.** Four spots (the Template step tile, the inspector, the template-manager header) used `FallbackValue={loc:Loc …}` — a markup extension there yields a Binding OBJECT, and when the fallback fired the UI rendered its ToString(). A new `LocFallbackConverter` shows the localized placeholder ("no template" / "not saved") instead.
+
+### Added
+- **File → "Save PDF…" with export options.** Saves the selected source file (with page edits — rotation, grayscale) without imposition. A new options dialog offers the same choices as the imposition export: **format** (plain PDF / PDF/X-1a / X-3 / X-4), **engine** (Auto / imPRESS Export Engine / Ghostscript), **PDF version** (1.4–1.7) and **ICC profile**. Plain save is a copy with edits (optionally just re-stamping the version header); PDF/X produces a print-standard file — X-4 natively via the imPRESS engine, X-1a/X-3 via Ghostscript. Settings persist separately from the main export; the original on disk stays untouched.
+- **Source-file pill.** After a file is analyzed the top bar shows its real parameters: PDF version, colour spaces (CMYK / RGB / CMYK+RGB) and — when the file contains images — the lowest effective resolution ("PDF 1.7 · RGB · min 287 dpi"). DPI is a free by-product of the standard analysis pass (pixel samples ÷ placed size), no extra scan.
+- **"Preview" inspector tab — page thumbnails with edits.** A new first tab shows thumbnails of every page of the loaded file — **no page cap**. Bitmaps exist only for thumbnails inside a sliding visibility window (viewport + margin, ~90 items): scrolling moves the window and thumbnails outside it release their references, so a 1000-page book costs the same memory as a leaflet, and revisited pages come straight back from the renderer cache. Superseded edit working copies are cleaned from the temp directory. Right-click opens the edit menu: **rotate 90° CW / CCW / 180°** (lossless /Rotate flip), **grayscale this page** and **grayscale the whole file**. Non-destructive: every edit produces a temp working copy — the original PDF is never touched; analysis, preview, merge, imposition and export automatically use the edited version; a banner above the thumbnails flags active edits and "Revert file edits" restores the original. Edits chain (two 90° turns = 180°).
+- **Thumbnails tab appears only after a file is loaded; clicking a thumbnail shows that page on the main canvas** (with an active imposition the canvas switches to the page preview — the plan survives, "Plan" brings the sheets back). Since thumbnails now navigate pages, the bottom page strip on the canvas shows **only for a planned imposition** (sheet numbers) and disappears in the page preview.
+- **Tolerant stream decoder.** Some design-tool PDFs carry Flate content streams terminated without a final block — PdfSharp's strict inflater threw "Unexpected EOF" on them and the grayscale conversion crashed. The engine now avoids the eager bulk decode and falls back to a tolerant .NET inflate that keeps the decoded prefix — exactly what RIPs do. Regression-tested.
+- **Fading page-number badge.** The "n / N" numbering stamp on the preview canvas now shows for 2 seconds after every page/sheet change and fades out smoothly — it no longer permanently covers page content. The export itself still prints the stamp at full ink.
+- **Grayscale runs entirely on the imPRESS engine — no Ghostscript.** Vector colour operators (RGB and CMYK) in page and form content streams are rewritten to luminance gray; images (JPEG/DCT, 8-bit Flate RGB/CMYK rasters, Indexed palettes) are converted pixel-by-pixel to 8-bit DeviceGray with Flate compression. Single-page edits convert the extracted page in isolation and splice it back, so images shared with other pages stay untouched. Exotic image flavours (JPX, 16-bit) are left in colour rather than risking a corrupt file. Verified end-to-end with renders.
+
+### Changed
+- **File info window redesigned.** Tabs instead of expanders — Overview (file, metadata, properties) / Validation / Colour & PDF/X (standard, OutputIntent, spot colours, transparency) / Page content (boxes, images, fonts) / Ink coverage — the same tab pattern as the main-window inspector. All hardcoded light-theme colours replaced with theme-dictionary brushes, fixing the dialog in dark mode.
+
+## [1.5.2] - 2026-07-14
+
+Hot folders 2.0: imPRESS engine support, template picker, a simpler dialog; complete page-box set on exported sheets.
+
+### Added
+- **imPRESS Export Engine in hot folders.** Per-folder PDF/X engine selection (Auto / native / Ghostscript) and output PDF version for plain exports (1.4–1.7) — the same options as the export dialog, persisted in `hotfolders.json`.
+- **Template picker.** Instead of typing a path, pick a template from the saved-templates list (the same library the template manager uses); a "From file…" button and an editable path field remain for out-of-library templates.
+- **Simpler edit dialog.** The basic flow is name → input folder → output folder → template → export; work/archive/error folders (auto-created), file filters, success/failure behaviour, the naming pattern and the Ghostscript path moved into an "Advanced" expander.
+- **Zero-config Ghostscript.** A path is no longer required for PDF/X — the pipeline resolves the bundled copy itself (settings → bundled → Program Files); applies to the GUI and CLI too.
+
+### Fixed
+- **Exported sheets now declare the full page-box set** (CropBox = BleedBox = TrimBox = MediaBox, including the cutting-guide page) — re-importing our own output used to trigger "BleedBox missing" warnings and a "document declares no bleed" error. Deep validation additionally recognises imPRESS-produced sheets (via the Producer field) and shows a single info note — the sheet is the final format; item bleed lives inside it — instead of false bleed errors.
+
+## [1.5.1] - 2026-07-13
+
+Fix pack after 1.5.0: localized preflight, no more silent manager ↔ job template divergence, About window sizing.
+
+### Changed
+- **Quick export preflight messages moved to the localization system** (Polish/English following the app language): `BLEED_LOW`, `RGB_ONLY`, `TRIM_MISMATCH`/`TRIM_ROTATED`, `SIGNATURE_PADDING`, `SADDLE_TOO_THICK`, `DUPLEX_ODD_PAGES`, `ENCRYPTED`, `NO_ICC`, the PDF/X rules and the rest. The deep prepress validation already had localized categories and recommended actions.
+
+### Fixed
+- **3 mm bleed silently became 0 on every "Use template" (the root cause of the recurring `BLEED_LOW` reports).** The main window's status pills (bleed, gutter, sheet size) bound `Run.Text` to template fields — and Avalonia's `Run.Text` binds two-way by default (WPF heritage). On a `CurrentTemplate` swap the stale displayed value was written *into the freshly applied template*: the preset carried 3 mm, the job received 0. Reproduced with a headless-UI test using the exact pill markup; fixed by forcing `Mode=OneWay` on every display-only field, with a regression test guarding the pattern. New template-chain diagnostics (preset → commit → adopt → plan) made the bisection possible and stay in the app.
+- **"Template in the manager ≠ template of the job" clarity.** Closing the manager without "Use template" now prints which template stays active in the status bar, and the `BLEED_LOW` message names the template being judged and points to where to fix it.
+- **Shared template reference.** The template editor (a singleton) handed the main window its live `Template` reference — a later manager session (even one abandoned with Cancel) could silently mutate the active job's template. "Use template" now hands over a deep copy.
+- **`RGB_ONLY` message clarified:** it now states that PDF/X exports convert colours automatically (imPRESS engine / Ghostscript) while a plain export keeps RGB values unchanged.
+- **About window:** a fixed height clipped the footer with the Close button; the window now sizes to its content.
+
+## [1.5.0] - 2026-07-13
+
+The imPRESS Export Engine release: native PDF/X-4 with ICC colour conversion — no Ghostscript required — a native ink-coverage scanner, and a redesigned template manager.
+
+### Added
+- **imPRESS Export Engine — native PDF/X-4 without Ghostscript.** A new in-house packaging engine embeds the OutputIntent with the selected ICC profile, full XMP metadata (`pdfxid:GTS_PDFXVersion`, IDs, dates, title), `/Trapped`, a TrimBox on every page and the PDF 1.6 version stamp — entirely natively. Honest scope: the engine packages print-ready files (CMYK/ICC) and converts vector RGB (below); transparency flattening, RGB images, and PDF/X-1a / X-3 remain the Ghostscript engine's job.
+- **ICC colour conversion with no external libraries.** Vector RGB fills and strokes in the composed file are rewritten to DeviceCMYK through the selected ICC profile using the Windows colour engine (WCS/mscms, relative colorimetric intent). Vector-only RGB artwork no longer forces the Ghostscript path — the native engine converts it itself and reports the conversion in the export log.
+- **Two-stage conformance gate.** Source analysis (RGB text/images, encryption, raster logo overlay) **plus** a deep scan of the composed file's decoded content streams and form XObjects for DeviceRGB operators. Vector RGB → native conversion; RGB images or an unreadable stream → Ghostscript. Fails safe: doubt never ships a non-conformant file with a false conformance claim.
+- **Engine selection in the export dialog and CLI** (`--engine auto|native|gs`): Auto picks the native engine whenever the file qualifies; forcing native on a file with RGB images produces a clear message instead of a silent conformance failure.
+- **Output PDF version selection (1.4–1.7)** for plain exports (`--pdf-version` in the CLI, a combo in the dialog). PDF/X modes pin the version their spec requires (X-1a/X-3 → 1.4, X-4 → 1.6).
+- **All composer-drawn ink switched to DeviceCMYK** — backgrounds, sheet numbers, cutting guides, barcodes — fixing a PdfSharpCore trap where the default colour mode rewrote every colour as RGB. Verified end-to-end: both a CMYK job and a vector-RGB job package natively and render correctly (reds converted per SWOP); conformance markers (GTS_PDFX, XMP, OutputIntents, TrimBox) confirmed in the outputs.
+- **Native ink-coverage scanner.** "Scan ink coverage" in the file-info window now runs on the imPRESS engine: pages are rendered by the internal rasterizer and pixels converted to CMYK through the export ICC profile (SWOP fallback). Ghostscript is no longer needed for the scan; the results (average C/M/Y/K + Σ, 250% warning threshold) are honestly labelled a composite page average, not separation densitometry.
+
+### Changed
+- **Template manager redesigned** to match the main window's visual language: a header bar with the template name, an active-binding pill and save actions; the editor split into "General" / "Marks" / "Binding & special" / "Extras" tabs (the same pattern as the main-window inspector) instead of one long scrolling form. Binding-specific cards (saddle, gatefold, fold panels, roll, Step & Repeat, creep) appear only when the chosen binding actually uses them; an enabled roll section never disappears, and a binding with no special options gets an explanatory empty state. The validation banner sits above the tabs so errors are visible from any tab. Every existing function is preserved.
+
+### Fixed
+- **Export metadata:** output files now sign themselves "imPRESS Studio" (Creator) and "imPRESS Export Engine" (Producer) — previously the internal module name "Imposition.App" leaked into the Creator field.
+- **Confusing `X4_VERSION` preflight note** when exporting with PDF 1.7 selected: the report now states clearly that PDF 1.6 applies only to the PDF/X-4 copy (`.pdfx4.pdf`, an ISO 15930-7 requirement) and the main export keeps its own version setting.
+
+### Tests
+- 282/282 passing, including packaging read-back (version stamp, TrimBox, conformance markers via PdfPig), composed-RGB scan classification, ICC transform sanity on SWOP primaries, and a decoded re-scan proving all `rg`/`RG` operators are rewritten after conversion.
 
 ## [1.4.8] - 2026-07-06
 
