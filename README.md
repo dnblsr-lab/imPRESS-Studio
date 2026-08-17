@@ -1,3 +1,18 @@
+<b>Conclusion of imPRESS Studio Development
+
+Due to limited interest in the imPRESS Studio project, we have decided to discontinue its further development.
+
+The lack of a sufficient number of testers and limited interest in the product mean that continuing to develop this hobby project is no longer justified at this time.
+
+We would like to sincerely thank everyone who downloaded, tested, and provided feedback on imPRESS Studio. Your time and involvement have been greatly appreciated.
+
+At the same time, we don't want the project to disappear completely. We will soon release imPRESS Studio 1.5.11, which will be available without the licensing system and completely free of charge, offering the full functionality of the application.
+
+Thank you to everyone who has been with us throughout the development of imPRESS Studio!
+
+imPRESS Studio Team
+</b>
+
 <b> !!! A note about installing on Windows:
 imPRESS Studio is independent, self-published software. Because we don't pay for expensive corporate Microsoft certificates, Windows SmartScreen may show a blue warning when you launch the installer.
 How to run it? Click “More info”, then “Run anyway”. We guarantee the application code is 100% safe and free of malware. !!!
