@@ -106,7 +106,7 @@ license info</code></pre>
     <li>C# / .NET 8</li>
     <li>Avalonia UI</li>
     <li>PDFium / Docnet</li>
-    <li>Ghostscript</li>
+    <li>Ghostscript (opcjonalny)</li>
     <li>Skia</li>
     <li>MVVM</li>
   </ul>
@@ -225,7 +225,7 @@ license info</code></pre>
     <li>C# / .NET 8</li>
     <li>Avalonia UI</li>
     <li>PDFium / Docnet</li>
-    <li>Ghostscript</li>
+    <li>Ghostscript (optional)</li>
     <li>Skia</li>
     <li>MVVM</li>
   </ul>
