@@ -83,7 +83,7 @@ Jak uruchomić program? Kliknij „Więcej informacji”, a następnie „Urucho
   <ul>
     <li>Windows 10 / 11 x64</li>
     <li>.NET 8 Runtime, jeśli nie jest dołączony do instalatora</li>
-    <li>Ghostscript — wymagany dla eksportu PDF/X</li>
+    <li>Ghostscript — wymagany dla eksportu PDF/X (opcjonalny)</li>
   </ul>
 
   <h2>🛠️ CLI</h2>
@@ -202,7 +202,7 @@ license info</code></pre>
   <ul>
     <li>Windows 10 / 11 x64</li>
     <li>.NET 8 Runtime, if not bundled with installer</li>
-    <li>Ghostscript — required for PDF/X export</li>
+    <li>Ghostscript — required for PDF/X export (optional)</li>
   </ul>
 
   <h2>🛠️ CLI</h2>
