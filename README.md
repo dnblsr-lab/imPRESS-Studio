@@ -1,258 +1,129 @@
+# imPRESS Studio
 
+<a id="english"></a>
 
-<b> !!! A note about installing on Windows:
-imPRESS Studio is independent, self-published software. Because we don't pay for expensive corporate Microsoft certificates, Windows SmartScreen may show a blue warning when you launch the installer.
-How to run it? Click “More info”, then “Run anyway”. We guarantee the application code is 100% safe and free of malware. !!!
+**English** · [Polski ↓](#polski)
 
-!!! Informacja o instalacji na systemie Windows:
-imPRESS Studio jest niezależnym, autorskim oprogramowaniem. Ponieważ nie korzystamy z drogich korporacyjnych certyfikatów Microsoftu, Windows SmartScreen może wyświetlić niebieskie ostrzeżenie podczas uruchamiania instalatora.
-Jak uruchomić program? Kliknij „Więcej informacji”, a następnie „Uruchom mimo to”. Gwarantujemy, że kod aplikacji jest w 100% bezpieczny i wolny od złośliwego oprogramowania. !!!
+**From a PDF file to a print-ready sheet. Now free.**
 
-</b>
+imPRESS Studio is an application for people who prepare files for print. Imposition, preflight, PDF export and production automation — from a single business card to a print shop's job queue.
 
-<html lang="pl">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+Version **1.7.3** closes the current chapter of this project. Every feature is available free of charge, including for commercial use, without activation or a time limit.
 
-</head>
-<body>
+**[Download imPRESS Studio for Windows →](https://github.com/dnblsr-lab/imPRESS-Studio/releases/latest)**  
+Windows 10 / 11 · x64 · Runtime included in the installer
 
-  <h1>🇵🇱 imPRESS Studio</h1>
+---
 
-  <p><strong>Profesjonalne narzędzie do impozycji PDF dla poligrafii i DTP</strong></p>
+When I started this project, I wanted to build a tool I would want to use in a prepress department: practical, comfortable to work with, and able to take an incoming PDF all the way to a sheet ready for print.
 
-  <p>
-    imPRESS Studio to desktopowa aplikacja do przygotowania arkuszy drukarskich
-    z plików PDF — z myślą o drukarniach, studiach DTP i osobach przygotowujących
-    materiały do druku.
-  </p>
+Over time, it grew to include more imposition modes, templates, file checks, ICC profiles, hot folders and Workflow. Behind each feature were hours of work, fixes, and one recurring question: “How should this work in real production?”
 
-  <h2>✨ Funkcje</h2>
+Seven months after the first release, interest in the application has remained too low to justify continuing development in its current form. So, for now, I am bringing this chapter to a close and pausing development.
 
-  <ul>
-    <li>Impozycja PDF</li>
-    <li>Obsługa formatów SRA3, A3, Letter oraz własnych rozmiarów arkusza</li>
-    <li>Znaczniki drukarskie: crop marks, pasery, paski CMYK, znaczniki falcowania</li>
-    <li>Oprawa zeszytowa, klejona oraz falcowanie</li>
-    <li>Kompensacja creep / pełzania</li>
-    <li>Interaktywny podgląd arkuszy z zoomem, panem i obrotem</li>
-    <li>Podgląd kanałów CMYK — Ink Inspector</li>
-    <li>Próbnik koloru RGB + CMYK</li>
-    <li>Hot Folders</li>
-    <li>Progressive Zoom — natychmiastowy podgląd podczas powiększania</li>
-    <li>Eksport do PDF, PDF/X-1a oraz PDF/X-4</li>
-    <li>Preflight przed eksportem</li>
-    <li>Tryb CLI do zadań wsadowych</li>
-    <li>Interfejs PL / EN</li>
-  </ul>
+The finished application remains available for everyone to use for free. If it helps someone prepare a print run, save time on repeat jobs, or simply understand imposition a little better, the work that went into it will keep serving a purpose.
 
-  <h2>🚀 Instalacja</h2>
+---
 
-  <p>
-    Najnowszą wersję można pobrać z zakładki
-    <strong>Releases</strong>:
-  </p>
+**What can you use?**
 
-  <p>
-    <a href="https://github.com/dnblsr-lab/imPRESS-Studio/releases">
-      https://github.com/dnblsr-lab/imPRESS-Studio/releases
-    </a>
-  </p>
+- **PDF imposition:** N-Up layouts, booklets and books, folded leaflets, Cut & Stack, work-and-tumble and mixed-size gang runs.
+- **Nesting:** rectangular and contour-based product placement, with spacing and previews.
+- **Production preparation:** templates, bleed, production marks, numbering, paper grain direction and press profiles.
+- **File checks and export:** preflight, PDF and PDF/X export, ICC profiles and sheet previews.
+- **Additional tools:** CSV personalization, folding schemes, DXF/CF2 die exchange and print-run cost comparison.
+- **Automation:** hot folders, CLI and Impress Workflow, with a web portal, job queue, history and user roles.
 
-  <h2>🔐 Licencjonowanie</h2>
+All of these features are available in the free release. There are no export, workstation or time limits.
 
-  <p>Aplikacja wymaga aktywacji licencji.</p>
-
-  <p>Dostępne są:</p>
-
-  <ul>
-    <li>licencje testowe</li>
-    <li>licencje płatne</li>
-  </ul>
+**Getting started**
 
-  <p>
-    <strong>Kontakt w sprawie licencji testowej lub płatnej:</strong><br />
-    <a href="mailto:impress_studio@proton.me">impress_studio@proton.me</a>
-  </p>
-
-  <p><strong>Ceny ustalane indywidualnie.</strong></p>
-
-  <h2>⚙️ Wymagania</h2>
-
-  <ul>
-    <li>Windows 10 / 11 x64</li>
-    <li>.NET 8 Runtime, jeśli nie jest dołączony do instalatora</li>
-    <li>Ghostscript — wymagany dla eksportu PDF/X (opcjonalny)</li>
-  </ul>
+1. Download the **1.7.3** installer from [GitHub Releases](https://github.com/dnblsr-lab/imPRESS-Studio/releases/latest).
+2. Install and launch the application — no licence key is required.
+3. Choose a template, load your PDF, check the layout and export the finished sheets.
 
-  <h2>🛠️ CLI</h2>
+Upgrading from an earlier version preserves your settings, templates and existing licence files. An expired licence does not block work in version 1.7.3's default free mode.
 
-  <p>Przykład użycia:</p>
+**The application keeps working, even if the website goes away.**
 
-  <pre><code>impress impose input.pdf output.pdf --template saddle</code></pre>
+Local imposition, export and hot folders work without a connection to impressstudio.pl. An unavailable server does not block the application. Downloading updates and using remote services require the appropriate network connection.
 
-  <p>Dostępne komendy licencyjne:</p>
+Anonymous diagnostics remain optional. You can disable them in Settings; connection errors and timeouts do not interrupt your work.
 
-  <pre><code>license keygen
-license fingerprint
-license issue
-license activate
-license info</code></pre>
-
-  <h2>🧠 Technologia</h2>
-
-  <ul>
-    <li>C# / .NET 8</li>
-    <li>Avalonia UI</li>
-    <li>PDFium / Docnet</li>
-    <li>Ghostscript (opcjonalny)</li>
-    <li>Skia</li>
-    <li>MVVM</li>
-  </ul>
+The project is not currently under active development, and no further releases are planned. The licensing mechanism has been retained to leave room for a possible return to the project in the future — the current release is free by default.
 
-  <h2>⚠️ Uwagi</h2>
+**Thank you for being part of this chapter.**
 
-  <ul>
-    <li>Podgląd CMYK jest symulacją, nie prawdziwą separacją drukarską.</li>
-    <li>Do finalnej produkcji zalecany jest eksport PDF/X oraz weryfikacja w RIP-ie.</li>
-  </ul>
+To everyone who downloaded the application, tried it with their own files, reported a problem, or took a moment to look at it — thank you.
 
-  <h2>📌 Roadmap</h2>
+I learned a great deal while building this project. I am leaving it here in the hope that it will be useful in someone's everyday work.
 
-  <ul>
-    <li>Integracja JDF/JMF</li>
-    <li>Wersje macOS / Linux</li>
-    <li>Więcej szablonów gang-run</li>
-    <li>Kolejne języki interfejsu</li>
-  </ul>
+Well-prepared files, perfectly aligned sheets, and as little wasted paper as possible. 🙂
 
-  <h2>👤 Autor</h2>
-
-<p>
-  <strong>WB</strong><br />
-  <a href="mailto:impress_studio@proton.me">impress_studio@proton.me</a><br />
-  <a href="https://impressstudio.pl">impressstudio.pl</a>
-</p>
+**Wojciech Bujacz**  
+Creator of imPRESS Studio · 12 October 2026
 
-  <hr />
-
-  <h1>🇬🇧 imPRESS Studio</h1>
+---
 
-  <p><strong>Professional PDF imposition tool for print production and DTP</strong></p>
+<a id="polski"></a>
 
-  <p>
-    imPRESS Studio is a desktop application for arranging PDF pages into
-    print-ready sheets. It is designed for print shops, DTP studios and
-    production workflows.
-  </p>
+**Polski** · [English ↑](#english)
 
-  <h2>✨ Features</h2>
+**Od pliku PDF do gotowego arkusza. Teraz za darmo.**
 
-  <ul>
-    <li>PDF imposition</li>
-    <li>Support for SRA3, A3, Letter and custom sheet sizes</li>
-    <li>Print marks: crop marks, registration marks, CMYK color bars, fold marks</li>
-    <li>Saddle stitch, perfect bound and folding workflows</li>
-    <li>Creep compensation</li>
-    <li>Hot Folders</li>
-    <li>Interactive sheet preview with zoom, pan and rotation</li>
-    <li>CMYK channel preview — Ink Inspector</li>
-    <li>RGB + CMYK color sampler</li>
-    <li>Progressive Zoom — instant feedback while zooming</li>
-    <li>Export to PDF, PDF/X-1a and PDF/X-4</li>
-    <li>Preflight validation before export</li>
-    <li>CLI batch mode</li>
-    <li>Polish / English interface</li>
-  </ul>
-
-  <h2>🚀 Installation</h2>
-
-  <p>
-    Download the latest version from
-    <strong>Releases</strong>:
-  </p>
-
-  <p>
-    <a href="https://github.com/dnblsr-lab/imPRESS-Studio/releases">
-      https://github.com/dnblsr-lab/imPRESS-Studio/releases
-    </a>
-  </p>
-
-  <h2>🔐 Licensing</h2>
-
-  <p>The application requires license activation.</p>
-
-  <p>Available:</p>
-
-  <ul>
-    <li>trial licenses</li>
-    <li>paid licenses</li>
-  </ul>
-
-  <p>
-    <strong>Contact for trial or paid license:</strong><br />
-    <a href="mailto:impress_studio@proton.me">impress_studio@proton.me</a>
-  </p>
-
-  <p><strong>Pricing is determined individually.</strong></p>
-
-  <h2>⚙️ Requirements</h2>
-
-  <ul>
-    <li>Windows 10 / 11 x64</li>
-    <li>.NET 8 Runtime, if not bundled with installer</li>
-    <li>Ghostscript — required for PDF/X export (optional)</li>
-  </ul>
-
-  <h2>🛠️ CLI</h2>
-
-  <p>Example:</p>
-
-  <pre><code>impress impose input.pdf output.pdf --template saddle</code></pre>
-
-  <p>Available license commands:</p>
-
-  <pre><code>license keygen
-license fingerprint
-license issue
-license activate
-license info</code></pre>
-
-  <h2>🧠 Tech Stack</h2>
-
-  <ul>
-    <li>C# / .NET 8</li>
-    <li>Avalonia UI</li>
-    <li>PDFium / Docnet</li>
-    <li>Ghostscript (optional)</li>
-    <li>Skia</li>
-    <li>MVVM</li>
-  </ul>
-
-  <h2>⚠️ Notes</h2>
-
-  <ul>
-    <li>CMYK preview is a simulation, not true print separations.</li>
-    <li>For production use, PDF/X export and RIP verification are recommended.</li>
-  </ul>
-
-  <h2>📌 Roadmap</h2>
-
-  <ul>
-    <li>JDF/JMF integration</li>
-    <li>macOS / Linux versions</li>
-    <li>More gang-run templates</li>
-    <li>Additional UI languages</li>
-  </ul>
-
-  <h2>👤 Author</h2>
-
-<p>
-  <strong>WB</strong><br />
-  <a href="mailto:impress_studio@proton.me">impress_studio@proton.me</a><br />
-  <a href="https://impressstudio.pl">impressstudio.pl</a>
-</p>
-
-</body>
-</html>
+imPRESS Studio to aplikacja dla osób, które przygotowują pliki do druku. Impozycja, preflight, eksport PDF i automatyzacja produkcji — od pojedynczej wizytówki po kolejkę zleceń w drukarni.
+
+Wersja **1.7.3** zamyka obecny etap rozwoju projektu. Wszystkie funkcje są dostępne bez opłat, także do pracy komercyjnej, bez aktywacji i limitu czasu.
+
+**[Pobierz imPRESS Studio dla Windows →](https://github.com/dnblsr-lab/imPRESS-Studio/releases/latest)**  
+Windows 10 / 11 · x64 · Instalator zawiera środowisko uruchomieniowe
+
+---
+
+Kiedy zaczynałem ten projekt, chciałem stworzyć narzędzie, które sam chciałbym mieć w przygotowalni: wygodne, konkretne i pozwalające przejść od otrzymanego PDF-a do gotowego arkusza.
+
+Z czasem doszły kolejne tryby impozycji, szablony, kontrola plików, profile ICC, hot foldery i Workflow. Za każdą z tych funkcji były godziny pracy, poprawki i szukanie odpowiedzi na pytanie: „jak to powinno działać w prawdziwej produkcji?”.
+
+Po siedmiu miesiącach od pierwszego wydania zainteresowanie aplikacją pozostało zbyt małe, żeby uzasadnić dalsze rozwijanie jej w dotychczasowej formie. Dlatego na ten moment kończę tę przygodę i wstrzymuję rozwój.
+
+Zostawiam jednak gotowy program do bezpłatnego używania. Jeśli pomoże komuś przygotować nakład, oszczędzić czas przy powtarzalnych zleceniach albo po prostu lepiej zrozumieć impozycję — ta praca będzie miała swój dalszy ciąg.
+
+---
+
+**Co zostaje do Twojej dyspozycji?**
+
+- **Impozycja PDF:** układy N-Up, broszury i książki, ulotki składane, Cut & Stack, work-and-tumble oraz mieszane formaty.
+- **Nesting:** rozmieszczanie produktów prostokątnych i według konturów, z odstępami i podglądem.
+- **Przygotowanie produkcji:** szablony, spady, znaczniki, numeracja, kierunek włókna papieru i profile maszyn.
+- **Kontrola i eksport:** preflight, eksport PDF oraz PDF/X, profile ICC i podgląd arkuszy.
+- **Dodatkowe narzędzia:** personalizacja CSV, schematy składania, wymiana wykrojników DXF/CF2 i porównanie kosztów nakładu.
+- **Automatyzacja:** hot foldery, CLI oraz Impress Workflow z portalem WWW, kolejką zleceń, historią i rolami użytkowników.
+
+Wszystkie te funkcje są dostępne w darmowym wydaniu. Bez limitu eksportów, liczby stanowisk i dni użytkowania.
+
+**Jak zacząć?**
+
+1. Pobierz instalator **1.7.3** z [GitHub Releases](https://github.com/dnblsr-lab/imPRESS-Studio/releases/latest).
+2. Zainstaluj aplikację i uruchom ją — klucz licencyjny nie jest potrzebny.
+3. Wybierz szablon, wczytaj PDF, sprawdź układ i wyeksportuj gotowe arkusze.
+
+Przy aktualizacji z wcześniejszej wersji zachowane zostają ustawienia, szablony i dotychczasowe pliki licencji. Wygasła licencja nie blokuje pracy w domyślnym darmowym trybie wersji 1.7.3.
+
+**Program zostaje, nawet gdy strona zniknie.**
+
+Lokalna impozycja, eksport i hot foldery działają bez połączenia z impressstudio.pl. Niedostępny serwer nie blokuje aplikacji. Pobieranie aktualizacji i korzystanie ze zdalnych usług wymagają odpowiedniego połączenia sieciowego.
+
+Anonimowa diagnostyka pozostaje opcjonalna. Możesz ją wyłączyć w ustawieniach; błędy połączenia i timeouty nie przerywają pracy.
+
+Projekt nie jest obecnie aktywnie rozwijany. Kolejne wydania nie są zaplanowane. Mechanizm licencjonowania został zachowany, aby pozostawić możliwość powrotu do projektu w przyszłości — obecne wydanie jest domyślnie darmowe.
+
+**Dziękuję za ten etap.**
+
+Każdemu, kto pobrał aplikację, sprawdził ją na swoich plikach, zgłosił problem albo poświęcił chwilę, żeby się jej przyjrzeć — dziękuję.
+
+Dużo się przy tym projekcie nauczyłem. Zostawiam go z nadzieją, że przyda się komuś w codziennej pracy.
+
+Dobrych plików, równych arkuszy i jak najmniej makulatury. 🙂
+
+**Wojciech Bujacz**  
+Autor imPRESS Studio · 12 października 2026
